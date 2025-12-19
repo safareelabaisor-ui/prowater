@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROI Calculator - Vending Machine (AI & Analytics Pro)</title>
+    <!-- โหลด Tailwind CSS และ Chart.js -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- ใช้ฟอนต์ Prompt และ Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Prompt', 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a; 
+        }
+        .pastel-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px -2px rgba(148, 163, 184, 0.12);
+            border-radius: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .pastel-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px -5px rgba(148, 163, 184, 0.2);
+        }
+        .input-pastel {
+            background: #f1f5f9;
+            border: 2px solid transparent;
+            padding: 10px 14px;
+            border-radius: 0.75rem;
+            color: #0f172a;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .input-pastel:focus {
+            outline: none;
+            background: #ffffff;
+            border-color: #0f172a;
+            box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.1);
+        }
+        .progress-bar {
+            height: 12px;
+            border-radius: 6px;
+            background: #e2e8f0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #10b981);
+            transition: width 1s ease-in-out;
+        }
+        .branch-btn {
+            padding: 8px 16px;
+            font-weight: 800;
+            border-radius: 12px;
+            transition: all 0.3s;
+            font-size: 0.75rem;
+        }
+        .branch-btn.active {
+            background-color: #0f172a;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .branch-btn.inactive {
+            background-color: #f1f5f9;
+            color: #64748b;
+        }
+        .ai-glow {
+            animation: glow 2s infinite alternate;
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 5px rgba(99, 102, 241, 0.2); }
+            to { box-shadow: 0 0 20px rgba(99, 102, 241, 0.6); }
+        }
+    </style>
+</head>
+<body class="min-h-screen py-10 px-4">
+
+    <div class="max-w-6xl mx-auto space-y-8">
+        
+        <!-- Header Section -->
+        <header class="flex flex-col md:flex-row justify-between items-center gap-6 bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200">
+            <div class="flex items-center gap-4">
+                <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="text-left">
+                    <h1 class="text-2xl font-black text-slate-900 tracking-tight leading-none uppercase">Vending ROI Pro</h1>
+                    <p class="text-indigo-600 text-sm font-black mt-1 uppercase">@SAFAREE AI Analytics</p>
+                </div>
+            </div>
+
+            <!-- Branch Switcher -->
+            <div class="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 shadow-inner overflow-x-auto max-w-full">
+                <button id="btn_overview" onclick="window.switchBranch('overview')" class="branch-btn inactive whitespace-nowrap">พอร์ตภาพรวม (Portfolio)</button>
+                <button id="btn_branch1" onclick="window.switchBranch('branch1')" class="branch-btn active whitespace-nowrap">สาขา 1 (Branch 1)</button>
+                <button id="btn_branch2" onclick="window.switchBranch('branch2')" class="branch-btn inactive whitespace-nowrap">สาขา 2 (Branch 2)</button>
+            </div>
+
+            <div class="flex items-center gap-3 bg-slate-100 p-2 px-4 rounded-2xl border border-slate-200">
+                <div class="text-right">
+                    <p id="userEmailDisplay" class="text-sm font-black text-slate-900 italic text-center">กำลังเชื่อมต่อ (Connecting...)</p>
+                    <p class="text-[10px] uppercase font-bold text-slate-500 tracking-widest text-center">User Authentication</p>
+                </div>
+                <div class="h-8 w-[1px] bg-slate-300 mx-2"></div>
+                <button id="authButton" onclick="window.toggleAuthModal(true)" 
+                        class="px-5 py-2 bg-slate-900 hover:bg-black text-white text-sm font-black rounded-xl transition duration-300 shadow-md">
+                    Login
+                </button>
+            </div>
+        </header>
+
+        <!-- Status Banner -->
+        <div id="statusBanner" class="hidden p-4 bg-amber-50 border border-amber-200 rounded-2xl text-amber-800 text-xs font-bold flex items-center gap-3">
+             <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+             <span id="statusBannerText"></span>
+        </div>
+
+        <!-- AI Insights & Portfolio Overview -->
+        <div id="overviewSection" class="hidden animate-fade-in space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="pastel-card p-8 bg-slate-900 text-white col-span-1 md:col-span-2">
+                    <h3 class="text-indigo-400 text-[10px] font-black uppercase tracking-widest mb-4">Total Assets Revenue (รายได้รวมทุกสินทรัพย์)</h3>
+                    <div class="flex flex-col md:flex-row justify-between items-end gap-6">
+                        <div>
+                            <p class="text-sm font-bold text-slate-400">รายได้รวมทุกสาขา (Total Revenue)</p>
+                            <h4 class="text-5xl font-black text-white" id="portfolioTotalRevenue">0.00 ฿</h4>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs font-bold text-indigo-400">กำไรสุทธิสะสม (Total Net Profit)</p>
+                            <h4 class="text-2xl font-black text-white" id="portfolioTotalNet">0.00 ฿</h4>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pastel-card p-6 flex flex-col justify-center items-center text-center space-y-4 border-2 border-indigo-200 ai-glow">
+                    <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-black text-slate-900">AI Business Insights</h4>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">วิเคราะห์ด้วย AI (AI Analysis)</p>
+                    </div>
+                    <button onclick="window.generateAIAnalysis()" id="aiBtn" class="w-full py-3 bg-indigo-600 text-white text-xs font-black rounded-xl hover:bg-indigo-700 transition shadow-sm">วิเคราะห์ข้อมูล (Start Analysis)</button>
+                </div>
+            </div>
+
+            <div class="pastel-card p-8">
+                <h3 class="text-xl font-black text-slate-900 mb-6 uppercase tracking-tighter italic">Revenue Comparison (เปรียบเทียบรายได้)</h3>
+                <div class="h-[300px]">
+                    <canvas id="portfolioChart"></canvas>
+                </div>
+            </div>
+            
+            <div id="aiResultBox" class="hidden pastel-card p-8 border-l-8 border-indigo-600 bg-indigo-50/30">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="px-2 py-1 bg-indigo-600 text-white text-[10px] font-black rounded uppercase">Gemini AI Insight</span>
+                    <h3 class="text-lg font-black text-slate-900 uppercase underline underline-offset-4">บทวิเคราะห์ทางธุรกิจ (Business Analysis)</h3>
+                </div>
+                <div id="aiContent" class="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap font-medium font-prompt"></div>
+            </div>
+        </div>
+
+        <!-- MAIN DATA SECTION -->
+        <div id="mainDataSection" class="space-y-8">
+            <!-- Recovery Tracker -->
+            <div class="pastel-card p-8 border-t-8 border-indigo-600">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
+                    <div>
+                        <div class="flex items-center gap-3">
+                            <h2 class="text-xl font-black text-slate-900 uppercase tracking-tight" id="recoveryTitle">Break-even Progress (ความคืบหน้าคืนทุน)</h2>
+                            <button onclick="window.toggleBranchNameEdit(true)" class="text-[10px] font-black text-indigo-500 uppercase hover:underline">แก้ไขชื่อ (Rename)</button>
+                        </div>
+                        <div id="branchNameEditGroup" class="hidden mt-2 flex gap-2">
+                            <input type="text" id="branchNameInput" class="input-pastel text-xs py-1" placeholder="ชื่อสาขา (New Name)">
+                            <button onclick="window.saveBranchName()" class="bg-indigo-600 text-white text-[10px] px-3 rounded-lg font-black shadow-sm">OK</button>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-3xl font-black text-indigo-600" id="recoveryPercent">0%</span>
+                    </div>
+                </div>
+                <div class="progress-bar mb-3">
+                    <div id="recoveryFill" class="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between text-[11px] font-black text-slate-400 uppercase">
+                    <span>Invest (ลงทุน): 35,000.00 ฿</span>
+                    <span id="recoveredAmountText">Recovered (คืนทุนแล้ว): 0.00 ฿</span>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid Summary -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 text-center">
+                 <div class="pastel-card p-6 border-b-4 border-indigo-500">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">ยอดลงทุนสาขา (Branch Investment)</p>
+                    <h3 class="text-3xl font-black text-slate-900" id="displayTotalInvestment">35,000.00</h3>
+                </div>
+                <div class="pastel-card p-6 border-b-4 border-rose-500">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 text-rose-500">ค่าใช้จ่ายรวม / ปี (Annual Expense)</p>
+                    <h3 class="text-3xl font-black text-slate-900" id="displayAnnualExpenseTotal">5,500.00</h3>
+                </div>
+                <div class="pastel-card p-6 border-b-4 border-emerald-500">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 text-emerald-600">กำไรสุทธิ / ปี (Net Profit/Year)</p>
+                    <h3 class="text-3xl font-black text-emerald-700" id="annualNetProfitResult">0.00</h3>
+                </div>
+                <div class="pastel-card p-6 border-b-4 border-amber-500">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">คืนทุนใน (Payback Period)</p>
+                    <h3 class="text-2xl font-black text-amber-700" id="paybackPeriodResult">-- ปี -- เดือน</h3>
+                    <div id="paybackStatus" class="hidden"></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left Side: Controls & Setup -->
+                <div class="lg:col-span-4 space-y-6">
+                    <!-- Step 1: Revenue Forecast -->
+                    <div class="pastel-card p-6">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 italic">Revenue Forecast (ประมาณรายได้)</p>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-[10px] font-black text-slate-500 uppercase ml-1">รายได้ต่อวัน (Daily Revenue)</label>
+                                <input type="number" id="dailyRevenue" value="100" class="input-pastel w-full text-xl" oninput="window.calculateROI()">
+                            </div>
+                            <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+                                <p class="text-[9px] font-black text-indigo-400 uppercase italic">Revenue / Year (รายรับรวมต่อปี)</p>
+                                <p class="text-lg font-black text-indigo-600" id="annualRevenueResult">0.00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Cost Setup -->
+                    <div class="pastel-card p-6 border-t-4 border-rose-400">
+                        <h2 class="text-xs font-black text-slate-900 mb-4 uppercase underline">Costs Management (จัดการต้นทุน)</h2>
+                        <div class="space-y-3">
+                            <div class="flex flex-col">
+                                <label class="text-[9px] font-black text-slate-400 uppercase mb-1 ml-1">ค่าไส้กรอง (Filters)</label>
+                                <input type="number" id="costFilter" placeholder="ไส้กรอง" class="input-pastel w-full text-xs" oninput="window.updateExpenses()">
+                            </div>
+                            <div class="flex flex-col">
+                                <label class="text-[9px] font-black text-slate-400 uppercase mb-1 ml-1">น้ำ/ไฟ (Utilities)</label>
+                                <input type="number" id="costUtility" placeholder="น้ำ/ไฟ" class="input-pastel w-full text-xs" oninput="window.updateExpenses()">
+                            </div>
+                            <div class="flex flex-col">
+                                <label class="text-[9px] font-black text-slate-400 uppercase mb-1 ml-1">ซ่อม (Repair/Maint)</label>
+                                <input type="number" id="costRepair" placeholder="ซ่อมบำรุง" class="input-pastel w-full text-xs" oninput="window.updateExpenses()">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Funds Allocation -->
+                    <div class="pastel-card p-6 border-t-4 border-purple-400">
+                         <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xs font-black text-slate-900 uppercase">5 Funds (การแบ่งกองทุน)</h2>
+                            <button id="editFundsButton" onclick="window.toggleEditMode(true)" disabled class="text-[10px] font-black text-indigo-600 uppercase hover:underline">Edit</button>
+                        </div>
+                        <div id="fundAllocationContainer" class="space-y-2"></div>
+                        <div id="fundEditContainer" class="hidden mt-4 pt-4 border-t space-y-2">
+                            <div id="fundEditInputs" class="space-y-2"></div>
+                            <button onclick="window.saveFundNames()" class="w-full py-2 bg-indigo-600 text-white text-[10px] font-black rounded-lg shadow-md">บันทึกชื่อกองทุน (Save)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Analytics & Logs -->
+                <div class="lg:col-span-8 space-y-6">
+                    <!-- NEW POSITION 1: Quarterly Breakdown (Moved up) -->
+                    <div class="pastel-card p-8 bg-slate-50/50">
+                        <h2 class="text-lg font-black text-slate-900 mb-6 uppercase tracking-tighter underline">Quarterly Breakdown (สรุปรายไตรมาส)</h2>
+                        <div id="quarterlyBreakdown" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                    </div>
+
+                    <!-- Maintenance Logs -->
+                    <div id="maintenanceCard" class="pastel-card p-6 border-l-8 border-emerald-400">
+                        <div class="flex justify-between mb-4">
+                            <h2 class="text-sm font-black text-slate-900 uppercase underline underline-offset-4">Maintenance Logs (บันทึกการบำรุงรักษา)</h2>
+                            <div id="maintenanceBadge" class="text-[9px] font-black px-2 py-1 rounded bg-slate-100">Status: --</div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex flex-col">
+                                <label class="text-[9px] font-black text-slate-400 uppercase mb-1 ml-1">เปลี่ยนไส้กรองล่าสุด (Last Filter Change)</label>
+                                <input type="date" id="lastFilterDate" class="input-pastel text-xs" onchange="window.saveNotes()">
+                            </div>
+                            <div class="flex flex-col">
+                                <label class="text-[9px] font-black text-slate-400 uppercase mb-1 ml-1">บันทึกสั้น (Short Memo)</label>
+                                <input type="text" id="maintNotes" placeholder="ซ่อมปั๊ม, ล้างถัง... (Memo)" class="input-pastel text-xs" oninput="window.saveNotes()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NEW POSITION 2: Monthly Log (Moved down) -->
+                    <div class="pastel-card p-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-black text-slate-900 uppercase tracking-tighter italic">Actual Monthly Income (รายได้จริงรายเดือน)</h2>
+                            <button onclick="window.exportDataToCSV()" class="px-4 py-2 bg-slate-100 text-slate-900 text-[10px] font-black rounded-xl border border-slate-200 shadow-sm">Export CSV</button>
+                        </div>
+                        <div id="monthlyInputGrid" class="grid grid-cols-3 sm:grid-cols-6 gap-3 mb-6"></div>
+                        
+                        <div class="mt-8 p-6 bg-slate-900 rounded-[2rem] text-white flex flex-col md:flex-row justify-between items-center gap-4">
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-widest">รายรับรวมปีปัจจุบัน (Total Actual)</p>
+                                <h4 class="text-3xl font-black text-white" id="actualYearlyTotal">0.00</h4>
+                            </div>
+                             <a href="https://drive.google.com/drive/folders/1pq6IX-3y4X9l3S3IVv8xHNANK24wsU3w?usp=sharing" target="_blank"
+                               class="px-6 py-2 bg-indigo-600 text-white font-black rounded-xl shadow-lg text-xs hover:bg-indigo-700 transition">Drive Evidence (คลังหลักฐาน)</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-400 font-black uppercase tracking-[0.4em] px-4 gap-4">
+             <p id="userIdDisplay">AUTHENTICATED: NOT_LOADED</p>
+             <p>© 2025 SAFAREE ENTERPRISE - ALL RIGHTS RESERVED</p>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-[2.5rem] shadow-2xl p-10 w-full max-w-md border border-slate-200">
+            <div class="text-center space-y-3">
+                <h3 class="text-2xl font-black text-slate-900 uppercase tracking-tighter italic">Safaree Business Portal</h3>
+                <p class="text-sm text-slate-500 font-bold tracking-tight">Login to manage your branch investments</p>
+            </div>
+            <div id="authMessage" class="mt-4 p-3 bg-rose-50 text-rose-600 text-xs font-black rounded-xl hidden text-center border border-rose-200"></div>
+            <form id="authForm" class="mt-6 space-y-4">
+                <input type="email" id="authEmail" required class="input-pastel w-full" placeholder="อีเมล (Email)">
+                <input type="password" id="authPassword" required class="input-pastel w-full" placeholder="รหัสผ่าน (Password)">
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <button type="button" onclick="window.processAuth('login')" class="py-4 text-white bg-slate-900 font-black rounded-2xl hover:bg-black transition shadow-lg">Login</button>
+                    <button type="button" onclick="window.processAuth('register')" class="py-4 text-slate-900 bg-white border-2 border-slate-900 font-black rounded-2xl">Register</button>
+                </div>
+            </form>
+            <button onclick="window.toggleAuthModal(false)" class="w-full mt-6 text-xs font-black text-slate-400 hover:text-slate-600 uppercase tracking-widest">Close (ปิด)</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // CONFIG & CONSTANTS
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "AIzaSyAkIATUjTrvXI2hUoGNEv5ntJAeulyOjVA",
+            authDomain: "prowater-60735.firebaseapp.com",
+            projectId: "prowater-60735",
+            appId: "1:411846039710:web:d775796cf016895886438f"
+        };
+        const apiKey = ""; // Gemini API Key provided by env
+        
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'prowater-multi-pro-v3';
+        const MONTHS_EN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const MONTHS_TH = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+        const INVEST_BASE = 35000;
+
+        let app, db, auth, userId = null;
+        let fundNames = Array.from({length: 5}, (_, i) => `ทุน ${i+1}`);
+        let currentCalculatedExpenses = 5500;
+        let currentBranchId = 'branch1';
+        let branchNames = { branch1: 'สาขา 1 (Yala)', branch2: 'สาขา 2 (Pattani)' };
+        let portfolioChart = null;
+
+        const fmt = (v) => new Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
+
+        // Safe DOM helper
+        const safeText = (id, text) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = text;
+        };
+
+        const safeValue = (id, val) => {
+            const el = document.getElementById(id);
+            if (el) el.value = val;
+        };
+
+        // Persistence Helper
+        async function setDocWithRetry(docRef, data) {
+            if (!userId) return;
+            let delay = 1000;
+            for (let i = 0; i < 5; i++) {
+                try { return await setDoc(docRef, data, { merge: true }); } 
+                catch (e) { if (i === 4) throw e; await new Promise(r => setTimeout(r, delay)); delay *= 2; }
+            }
+        }
+
+        const showStatus = (text) => {
+            const el = document.getElementById('statusBanner');
+            const txt = document.getElementById('statusBannerText');
+            if (el && txt) {
+                txt.textContent = text;
+                el.classList.remove('hidden');
+            }
+        };
+
+        // AI INSIGHTS
+        window.generateAIAnalysis = async () => {
+            const btn = document.getElementById('aiBtn');
+            const resultBox = document.getElementById('aiResultBox');
+            const aiContent = document.getElementById('aiContent');
+            if (!btn || !aiContent) return;
+
+            btn.disabled = true; btn.textContent = "AI Analysis in progress...";
+            resultBox.classList.remove('hidden');
+            aiContent.textContent = "Gemini AI กำลังรวบรวมข้อมูลรายได้ของทุกสาขาเพื่อวิเคราะห์จุดคุ้มทุนและโอกาสทางธุรกิจ (Gemini AI is processing your portfolio data)...";
+
+            const branches = ['branch1', 'branch2'];
+            let reportData = "";
+            for(const bid of branches) {
+                const act = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'actuals_' + bid));
+                const exp = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'expenses_' + bid));
+                const revenue = act.exists() ? Object.values(act.data().data || {}).reduce((a,b)=>a+b, 0) : 0;
+                const cost = exp.exists() ? (exp.data().f + exp.data().u + exp.data().r) : 5500;
+                reportData += `- ${branchNames[bid]}: รายได้สะสม ${revenue} บาท, ค่าใช้จ่ายปีละ ${cost} บาท\n`;
+            }
+
+            const prompt = `วิเคราะห์พอร์ตธุรกิจตู้กดน้ำ 2 สาขานี้ และสรุปคำแนะนำสั้นๆ เป็นภาษาไทย: ${reportData}\nเงินลงทุนต่อตู้คือ 35,000 บาท ช่วยแนะนำกลยุทธ์ทำกำไรเพิ่ม`;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                const result = await response.json();
+                aiContent.textContent = result.candidates[0].content.parts[0].text;
+            } catch (e) {
+                aiContent.textContent = "การวิเคราะห์ล้มเหลว โปรดตรวจสอบการเชื่อมต่ออินเทอร์เน็ต (Analysis failed, check connection).";
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "อัปเดตบทวิเคราะห์ AI (Refresh AI)";
+            }
+        };
+
+        // CHARTING
+        async function renderPortfolioChart() {
+            const canvasEl = document.getElementById('portfolioChart');
+            if (!canvasEl) return;
+            const ctx = canvasEl.getContext('2d');
+            if (portfolioChart) portfolioChart.destroy();
+
+            const datasets = [];
+            const colors = ['#6366f1', '#10b981'];
+
+            for (let i = 0; i < 2; i++) {
+                const bid = i === 0 ? 'branch1' : 'branch2';
+                const actSnap = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'actuals_' + bid));
+                const mData = (actSnap.exists() && actSnap.data().data) ? actSnap.data().data : {};
+                datasets.push({
+                    label: branchNames[bid], data: MONTHS_EN.map(m => mData[m] || 0),
+                    borderColor: colors[i], backgroundColor: colors[i] + '22', fill: true, tension: 0.4
+                });
+            }
+
+            portfolioChart = new Chart(ctx, {
+                type: 'line', data: { labels: MONTHS_TH, datasets },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+            });
+        }
+
+        window.switchBranch = (branchId) => {
+            currentBranchId = branchId;
+            const overviewSec = document.getElementById('overviewSection');
+            const mainSec = document.getElementById('mainDataSection');
+            if (!overviewSec || !mainSec) return;
+
+            ['overview', 'branch1', 'branch2'].forEach(id => {
+                const btn = document.getElementById('btn_' + id);
+                if (btn) btn.className = `branch-btn ${branchId === id ? 'active' : 'inactive'}`;
+            });
+
+            if (branchId === 'overview') {
+                overviewSec.classList.remove('hidden'); mainSec.classList.add('hidden');
+                updateOverviewStats(); renderPortfolioChart();
+            } else {
+                overviewSec.classList.add('hidden'); mainSec.classList.remove('hidden');
+                safeText('recoveryTitle', `Break-even Progress: ${branchNames[branchId]}`);
+                if (userId) loadBranchData();
+            }
+        };
+
+        async function updateOverviewStats() {
+            let totalRev = 0;
+            let totalCost = 0;
+            for (const bid of ['branch1', 'branch2']) {
+                const act = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'actuals_' + bid));
+                if (act.exists() && act.data().data) totalRev += Object.values(act.data().data).reduce((a,b)=>a+b, 0);
+                const exp = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'expenses_' + bid));
+                totalCost += exp.exists() ? (exp.data().f + exp.data().u + exp.data().r) : 5500;
+            }
+            safeText('portfolioTotalRevenue', fmt(totalRev) + " ฿");
+            safeText('portfolioTotalNet', fmt(totalRev - totalCost) + " ฿");
+        }
+
+        window.toggleBranchNameEdit = (show) => {
+            const group = document.getElementById('branchNameEditGroup');
+            if (group) group.classList.toggle('hidden', !show);
+            if(show) safeValue('branchNameInput', branchNames[currentBranchId]);
+        };
+
+        window.saveBranchName = async () => {
+            const newName = document.getElementById('branchNameInput').value || branchNames[currentBranchId];
+            branchNames[currentBranchId] = newName;
+            const btn = document.getElementById('btn_' + currentBranchId);
+            if (btn) btn.textContent = newName;
+            safeText('recoveryTitle', `Break-even Progress: ${newName}`);
+            window.toggleBranchNameEdit(false);
+            if (userId) await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'branch_config'), { branchNames });
+        };
+
+        window.calculateROI = () => {
+            const dailyEl = document.getElementById('dailyRevenue');
+            if (!dailyEl) return;
+
+            const daily = parseFloat(dailyEl.value) || 0;
+            const revY = daily * 365;
+            const profitY = revY - currentCalculatedExpenses;
+
+            safeText('annualRevenueResult', fmt(revY));
+            safeText('annualNetProfitResult', fmt(profitY));
+
+            const pbDisplay = document.getElementById('paybackPeriodResult');
+            if (pbDisplay) {
+                if (profitY <= 0) pbDisplay.textContent = "ไม่คืนทุน (No Payback)";
+                else {
+                    const y = Math.floor(INVEST_BASE / profitY);
+                    const m = Math.ceil(((INVEST_BASE/profitY)-y)*12);
+                    pbDisplay.textContent = `${y} ปี (Y) ${m} เดือน (M)`;
+                }
+            }
+            
+            const qBreakdown = document.getElementById('quarterlyBreakdown');
+            if (qBreakdown) {
+                let html = '';
+                for(let q=1; q<=4; q++) {
+                    const qNet = (daily*(365/4)) - (currentCalculatedExpenses/4);
+                    html += `<div class="p-4 bg-white rounded-xl border border-slate-200 flex justify-between items-center shadow-sm"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Quarter ${q}</span><span class="text-sm font-black text-indigo-600">${fmt(qNet)}</span></div>`;
+                }
+                qBreakdown.innerHTML = html;
+            }
+        };
+
+        window.calculateActualRevenue = async (save = false) => {
+            let total = 0; const data = {};
+            MONTHS_EN.forEach(m => { 
+                const el = document.getElementById(`actual${m}Revenue`);
+                const v = el ? (parseFloat(el.value) || 0) : 0; 
+                data[m] = v; total += v; 
+            });
+
+            safeText('actualYearlyTotal', fmt(total));
+            const pct = Math.min(100, (total / INVEST_BASE) * 100);
+            
+            safeText('recoveryPercent', pct.toFixed(1) + "%");
+            const fill = document.getElementById('recoveryFill');
+            if (fill) fill.style.width = pct + "%";
+            safeText('recoveredAmountText', "Recovered (คืนทุนแล้ว): " + fmt(total) + " ฿");
+            
+            if (save && userId) await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'actuals_' + currentBranchId), { data });
+        };
+
+        window.updateExpenses = () => {
+            const f = parseFloat(document.getElementById('costFilter').value) || 3000;
+            const u = parseFloat(document.getElementById('costUtility').value) || 1500;
+            const r = parseFloat(document.getElementById('costRepair').value) || 1000;
+            currentCalculatedExpenses = f + u + r;
+            
+            safeText('displayAnnualExpenseTotal', fmt(currentCalculatedExpenses));
+            window.calculateROI();
+            if (userId) setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'expenses_' + currentBranchId), { f, u, r });
+        };
+
+        window.saveNotes = async () => {
+            if (!userId) return;
+            const lastDate = document.getElementById('lastFilterDate').value;
+            const notes = document.getElementById('maintNotes').value;
+            updateMaintStatus(lastDate);
+            await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'notes_' + currentBranchId), { lastDate, notes });
+        };
+
+        function updateMaintStatus(dateStr) {
+            const badge = document.getElementById('maintenanceBadge');
+            if (!badge) return;
+            if(!dateStr) { badge.textContent = "Status: --"; return; }
+            const diff = Math.floor((new Date() - new Date(dateStr)) / (1000*60*60*24));
+            if (diff > 180) { badge.className = "text-[9px] font-black px-2 py-1 rounded bg-rose-500 text-white animate-pulse"; badge.textContent = `CRITICAL: ${diff} DAYS`; }
+            else { badge.className = "text-[9px] font-black px-2 py-1 rounded bg-emerald-500 text-white"; badge.textContent = `HEALTHY: ${diff} DAYS`; }
+        }
+
+        window.toggleEditMode = (isEdit) => {
+            const display = document.getElementById('fundAllocationContainer');
+            const edit = document.getElementById('fundEditContainer');
+            const inputs = document.getElementById('fundEditInputs');
+            if (display) display.classList.toggle('hidden', isEdit);
+            if (edit) edit.classList.toggle('hidden', !isEdit);
+            if (isEdit && inputs) {
+                inputs.innerHTML = fundNames.map((n, i) => `<input type="text" id="fundInput${i}" value="${n}" class="input-pastel w-full text-xs font-bold" placeholder="Fund Name" maxlength="15">`).join('');
+            }
+        };
+
+        window.saveFundNames = async () => {
+            if (!userId) return;
+            fundNames = Array.from({length: 5}, (_, i) => {
+                const el = document.getElementById(`fundInput${i}`);
+                return el ? (el.value || `ทุน ${i+1}`) : `ทุน ${i+1}`;
+            });
+            renderFunds(); window.toggleEditMode(false);
+            await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'config_' + currentBranchId), { fundNames });
+        };
+
+        function renderFunds() {
+            const container = document.getElementById('fundAllocationContainer');
+            if (!container) return;
+            container.innerHTML = fundNames.map((n, i) => `<div class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-200 shadow-sm"><span class="text-xs font-black text-slate-900">${n}</span><span class="text-xs font-black text-indigo-600">${fmt(INVEST_BASE/5)}</span></div>`).join('');
+        }
+
+        window.toggleAuthModal = (s) => {
+            const modal = document.getElementById('authModal');
+            if (modal) modal.style.display = s ? 'flex' : 'none';
+        };
+
+        window.processAuth = async (action) => {
+            const email = document.getElementById('authEmail').value;
+            const pass = document.getElementById('authPassword').value;
+            try {
+                if (action === 'login') await signInWithEmailAndPassword(auth, email, pass);
+                else await createUserWithEmailAndPassword(auth, email, pass);
+                window.toggleAuthModal(false);
+            } catch (e) { 
+                const msg = document.getElementById('authMessage');
+                if (msg) { msg.textContent = e.message; msg.classList.remove('hidden'); }
+            }
+        };
+
+        async function loadBranchData() {
+            if (!userId) return;
+            
+            // Clean up inputs first
+            MONTHS_EN.forEach(m => { const el = document.getElementById(`actual${m}Revenue`); if(el) el.value = 0; });
+            
+            // 1. Branch Names Config
+            const bSnap = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'branch_config')).catch(() => null);
+            if(bSnap && bSnap.exists()) {
+                branchNames = bSnap.data().branchNames || branchNames;
+                safeText('btn_branch1', branchNames.branch1);
+                safeText('btn_branch2', branchNames.branch2);
+            }
+
+            // 2. Fund Names
+            const conf = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'config_' + currentBranchId)).catch(() => null);
+            fundNames = (conf && conf.exists()) ? conf.data().fundNames : Array.from({length: 5}, (_, i) => `ทุน ${i+1}`);
+            renderFunds();
+
+            // 3. Expenses
+            const exp = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'expenses_' + currentBranchId)).catch(() => null);
+            if(exp && exp.exists()) { 
+                safeValue('costFilter', exp.data().f); 
+                safeValue('costUtility', exp.data().u); 
+                safeValue('costRepair', exp.data().r); 
+            } else {
+                safeValue('costFilter', 3000); safeValue('costUtility', 1500); safeValue('costRepair', 1000);
+            }
+            window.updateExpenses();
+
+            // 4. Notes
+            const note = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'notes_' + currentBranchId)).catch(() => null);
+            if(note && note.exists()) { 
+                safeValue('lastFilterDate', note.data().lastDate); 
+                safeValue('maintNotes', note.data().notes); 
+                updateMaintStatus(note.data().lastDate); 
+            } else {
+                safeValue('lastFilterDate', ""); safeValue('maintNotes', ""); updateMaintStatus("");
+            }
+
+            // 5. Actual Revenue
+            const act = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'actuals_' + currentBranchId)).catch(() => null);
+            MONTHS_EN.forEach(m => { 
+                const el = document.getElementById(`actual${m}Revenue`); 
+                if (el) el.value = (act && act.exists() && act.data().data && act.data().data[m]) ? act.data().data[m] : 0; 
+            });
+            window.calculateActualRevenue(false);
+        }
+
+        window.exportDataToCSV = () => {
+             let csv = "\uFEFFเดือน (Month),รายรับจริง (Actual Income)\n";
+             MONTHS_EN.forEach((m, i) => { const el = document.getElementById(`actual${m}Revenue`); csv += `${MONTHS_TH[i]} (${MONTHS_EN[i]}),${el ? el.value : 0}\n`; });
+             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+             const url = URL.createObjectURL(blob);
+             const a = document.createElement("a");
+             a.href = url; a.download = `Vending_ROI_${currentBranchId}.csv`; a.click();
+        };
+
+        window.onload = async () => {
+            const grid = document.getElementById('monthlyInputGrid');
+            if (grid) {
+                grid.innerHTML = MONTHS_EN.map((m, i) => `
+                    <div class="space-y-1 text-center">
+                        <label class="text-[8px] uppercase font-black text-slate-400 block">${MONTHS_TH[i]}<br>(${m})</label>
+                        <input type="number" id="actual${m}Revenue" class="input-pastel w-full text-center p-1.5 text-xs font-bold" oninput="window.calculateActualRevenue(true)">
+                    </div>`).join('');
+            }
+
+            const currentConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : firebaseConfig;
+            app = initializeApp(currentConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            const token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+            try {
+                if (token) await signInWithCustomToken(auth, token);
+                else await signInAnonymously(auth);
+            } catch (e) { 
+                console.error("Auth Error:", e.code);
+                if (e.code === 'auth/admin-restricted-operation') {
+                    showStatus("⚠️ กรุณาเปิด Anonymous Sign-in ใน Firebase Console (Please enable Anonymous Auth)");
+                }
+            }
+
+            onAuthStateChanged(auth, (u) => {
+                userId = u ? u.uid : null;
+                const isLoggedIn = u && !u.isAnonymous;
+                
+                safeText('userEmailDisplay', isLoggedIn ? u.email : (u ? "Connected (Guest Mode)" : "Offline"));
+                const authBtn = document.getElementById('authButton');
+                if (authBtn) {
+                    authBtn.textContent = isLoggedIn ? "LOGOUT" : "LOGIN";
+                    authBtn.onclick = isLoggedIn ? () => signOut(auth) : () => window.toggleAuthModal(true);
+                }
+                safeText('userIdDisplay', "AUTHENTICATED_UID: " + (userId || "OFFLINE"));
+                const editFundsBtn = document.getElementById('editFundsButton');
+                if (editFundsBtn) editFundsBtn.disabled = !userId;
+                
+                if (userId) loadBranchData();
+                else renderFunds();
+            });
+            
+            // Initial calc
+            window.calculateROI();
+        };
+    </script>
+</body>
+</html>
