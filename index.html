@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROI Calculator - Vending Machine (Unlimited Branches Pro)</title>
+    <title>ROI Calculator - Vending Machine (Professional Suite)</title>
     <!-- โหลด Tailwind CSS และ Chart.js -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -25,6 +25,11 @@
         .pastel-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 30px -5px rgba(148, 163, 184, 0.2);
+        }
+        /* กรอบสีเหลืองพาสเทลพิเศษ */
+        .highlight-yellow {
+            border: 4px solid #fef08a !important; /* Tailwind yellow-200 */
+            background-color: #fefce8 !important; /* Tailwind yellow-50 */
         }
         .input-pastel {
             background: #f1f5f9;
@@ -76,7 +81,6 @@
             from { box-shadow: 0 0 5px rgba(99, 102, 241, 0.2); }
             to { box-shadow: 0 0 20px rgba(99, 102, 241, 0.6); }
         }
-        /* Custom scrollbar for better UX */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -86,7 +90,7 @@
 
     <div class="max-w-6xl mx-auto space-y-8">
         
-        <!-- Header Section -->
+        <!-- ส่วนหัว (Header) -->
         <header class="flex flex-col md:flex-row justify-between items-center gap-6 bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200">
             <div class="flex items-center gap-4">
                 <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
@@ -100,11 +104,11 @@
                 </div>
             </div>
 
-            <!-- Dynamic Branch Switcher -->
+            <!-- ตัวสลับสาขา (Dynamic Branch Switcher) -->
             <div class="flex items-center gap-2 max-w-full">
                 <div id="branchListContainer" class="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 shadow-inner overflow-x-auto gap-1">
                     <button id="btn_overview" onclick="window.switchBranch('overview')" class="branch-btn inactive">Portfolio</button>
-                    <!-- Branch buttons will be injected here -->
+                    <!-- ปุ่มสาขาจะถูกสร้างที่นี่ -->
                 </div>
                 <button onclick="window.addNewBranch()" class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center hover:bg-indigo-600 hover:text-white transition shadow-sm font-black text-xl flex-shrink-0" title="เพิ่มสาขาใหม่">+</button>
             </div>
@@ -116,19 +120,19 @@
                 </div>
                 <div class="h-8 w-[1px] bg-slate-300 mx-2"></div>
                 <button id="authButton" onclick="window.toggleAuthModal(true)" 
-                        class="px-5 py-2 bg-slate-900 hover:bg-black text-white text-sm font-black rounded-xl transition shadow-md">
+                        class="px-5 py-2 bg-slate-900 hover:bg-black text-white text-sm font-black rounded-xl transition duration-300 shadow-md">
                     Login
                 </button>
             </div>
         </header>
 
-        <!-- Status Banner -->
+        <!-- แถบแจ้งเตือนสถานะ -->
         <div id="statusBanner" class="hidden p-4 bg-amber-50 border border-amber-200 rounded-2xl text-amber-800 text-xs font-bold flex items-center gap-3">
              <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
              <span id="statusBannerText"></span>
         </div>
 
-        <!-- OVERVIEW SECTION -->
+        <!-- หน้าภาพรวม (OVERVIEW SECTION) -->
         <div id="overviewSection" class="hidden animate-fade-in space-y-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="pastel-card p-8 bg-slate-900 text-white col-span-1 md:col-span-2">
@@ -157,6 +161,7 @@
                 </div>
             </div>
 
+            <!-- ตารางเปรียบเทียบผลงาน -->
             <div class="pastel-card p-8">
                 <h3 class="text-xl font-black text-slate-900 mb-6 uppercase tracking-tighter italic">Comparison Table (เปรียบเทียบผลงานแต่ละสาขา)</h3>
                 <div class="overflow-x-auto">
@@ -175,6 +180,7 @@
                 </div>
             </div>
 
+            <!-- กราฟแนวโน้มรายได้ -->
             <div class="pastel-card p-8">
                 <h3 class="text-xl font-black text-slate-900 mb-6 uppercase tracking-tighter italic text-center underline">Growth Chart (กราฟแนวโน้มรายได้)</h3>
                 <div class="h-[350px]">
@@ -191,9 +197,9 @@
             </div>
         </div>
 
-        <!-- MAIN DATA SECTION -->
+        <!-- ข้อมูลหลักรายสาขา (MAIN DATA SECTION) -->
         <div id="mainDataSection" class="space-y-8">
-            <!-- Recovery Tracker -->
+            <!-- แถบแสดงการคืนทุน -->
             <div class="pastel-card p-8 border-t-8 border-indigo-600">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
                     <div>
@@ -220,39 +226,48 @@
                 </div>
             </div>
 
-            <!-- Stats Dashboard Grid -->
+            <!-- แผงสถิติ Dashboard (Dashboard Grid Summary) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 text-center">
-                 <div class="pastel-card p-6 border-b-4 border-indigo-500">
+                 <!-- เพิ่มสีพื้นหลัง bg-indigo-50 -->
+                 <div class="pastel-card p-6 border-b-4 border-indigo-500 bg-indigo-50">
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">เงินลงทุนสาขา</p>
                     <h3 class="text-3xl font-black text-slate-900" id="displayTotalInvestment">35,000.00</h3>
                 </div>
-                <div class="pastel-card p-6 border-b-4 border-rose-500">
+                <!-- เพิ่มสีพื้นหลัง bg-rose-50 -->
+                <div class="pastel-card p-6 border-b-4 border-rose-500 bg-rose-50">
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 text-rose-500">ค่าใช้จ่ายรวม / ปี</p>
                     <h3 class="text-3xl font-black text-slate-900" id="displayAnnualExpenseTotal">5,500.00</h3>
                 </div>
-                <div class="pastel-card p-6 border-b-4 border-emerald-500">
+                <!-- เพิ่มสีพื้นหลัง bg-yellow-50 -->
+                <div class="pastel-card p-6 border-b-4 border-emerald-500 bg-yellow-50 ">
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 text-emerald-600">กำไรสุทธิ / ปี</p>
                     <h3 class="text-3xl font-black text-emerald-700" id="annualNetProfitResult">0.00</h3>
                 </div>
-                <div class="pastel-card p-6 border-b-4 border-amber-500">
+                <!-- เพิ่มสีพื้นหลัง bg-yellow-50 -->
+                <div class="pastel-card p-6 border-b-4 border-amber-500 bg-yellow-50 ">
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">ระยะเวลาคืนทุน</p>
                     <h3 class="text-2xl font-black text-amber-700" id="paybackPeriodResult">-- ปี -- เดือน</h3>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Left Side Controls -->
+                <!-- คอลัมน์ซ้าย: การตั้งค่าและการแบ่งกองทุน -->
                 <div class="lg:col-span-4 space-y-6">
-                    <div class="pastel-card p-6">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 italic text-center">ROI Calculation Settings</p>
+                    <!-- ROI Calculation Settings พร้อมกรอบเหลืองพาสเทล -->
+                    <div class="pastel-card p-6 highlight-yellow">
+                        <h2 class="text-xl font-black text-slate-900 mb-4 flex items-center gap-3">
+                            <span class="w-8 h-8 bg-slate-900 text-white rounded-lg flex items-center justify-center text-xs">01</span>
+                            ROI Calculation Settings
+                        </h2>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 italic">ประมาณรายได้และ ROI</p>
                         <div class="space-y-4">
                             <div>
-                                <label class="text-[10px] font-black text-slate-500 uppercase ml-1 block">รายได้ต่อวัน (ประมาณการ)</label>
+                                <label class="text-[10px] font-black text-slate-500 uppercase ml-1 block">รายได้ต่อวัน (Daily Revenue)</label>
                                 <input type="number" id="dailyRevenue" value="100" class="input-pastel w-full text-xl" oninput="window.calculateROI()">
                             </div>
-                            <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100">
-                                <p class="text-[9px] font-black text-indigo-400 uppercase">Revenue / Year (Estimate)</p>
-                                <p class="text-lg font-black text-indigo-600" id="annualRevenueResult">0.00</p>
+                            <div class="p-4 bg-white/50 rounded-xl border border-yellow-200">
+                                <p class="text-[9px] font-black text-yellow-600 uppercase">Revenue / Year (Estimate)</p>
+                                <p class="text-lg font-black text-slate-900" id="annualRevenueResult">0.00</p>
                             </div>
                         </div>
                     </div>
@@ -288,9 +303,10 @@
                     </div>
                 </div>
 
-                <!-- Right Side Logs -->
+                <!-- คอลัมน์ขวา: รายละเอียดไตรมาสและประวัติบันทึก -->
                 <div class="lg:col-span-8 space-y-6">
-                    <div class="pastel-card p-8 bg-slate-50/50">
+                    <!-- Quarterly Performance พร้อมกรอบเหลืองพาสเทล -->
+                    <div class="pastel-card p-8 highlight-yellow">
                         <h2 class="text-lg font-black text-slate-900 mb-6 uppercase tracking-tighter italic underline">Quarterly Performance (สรุปไตรมาส)</h2>
                         <div id="quarterlyBreakdown" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                     </div>
@@ -311,7 +327,7 @@
                             <h2 class="text-lg font-black text-slate-900 uppercase tracking-widest italic">Actual Income Record</h2>
                             <div class="flex gap-2">
                                 <button onclick="window.backupData()" class="px-3 py-2 bg-slate-100 text-slate-600 text-[9px] font-black rounded-xl border border-slate-200 uppercase tracking-widest">Backup JSON</button>
-                                <button onclick="window.exportDataToCSV()" class="px-3 py-2 bg-slate-900 text-white text-[9px] font-black rounded-xl border border-slate-900 uppercase tracking-widest">Export CSV</button>
+                                <button onclick="window.exportDataToCSV()" class="px-3 py-2 bg-slate-900 text-white text-[9px] font-black rounded-xl border border-slate-200 uppercase tracking-widest">Export CSV</button>
                             </div>
                         </div>
                         <div id="monthlyInputGrid" class="grid grid-cols-3 sm:grid-cols-6 gap-3 mb-6"></div>
@@ -335,7 +351,7 @@
         </div>
     </div>
 
-    <!-- Auth Modal -->
+    <!-- หน้าต่างเข้าสู่ระบบ (Auth Modal) -->
     <div id="authModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
         <div class="bg-white rounded-[2.5rem] shadow-2xl p-10 w-full max-w-md border border-slate-200">
             <div class="text-center space-y-3">
@@ -386,7 +402,7 @@
         const safeText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
         const safeValue = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
 
-        // Firebase Persistence Helper
+        // ตัวช่วยการบันทึกข้อมูล
         async function setDocWithRetry(docRef, data) {
             if (!userId) return;
             let delay = 1000;
@@ -402,16 +418,14 @@
             if (el && txt) { txt.textContent = text; el.classList.remove('hidden'); }
         };
 
-        // NEW: Dynamic Branch Management
+        // การจัดการสาขาแบบไดนามิก
         window.addNewBranch = async () => {
             if (!userId) { window.toggleAuthModal(true); return; }
             const branchCount = Object.keys(branchNames).length;
             const newId = 'branch_' + Date.now();
             const newName = `สาขาที่ ${branchCount + 1}`;
-            
             branchNames[newId] = newName;
             monthlyGoals[newId] = 5000;
-            
             await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'branch_config'), { branchNames });
             renderBranchButtons();
             window.switchBranch(newId);
@@ -420,7 +434,6 @@
         window.deleteCurrentBranch = async () => {
             if (!userId || currentBranchId === 'branch1') return;
             if (!confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูล "${branchNames[currentBranchId]}"?`)) return;
-            
             delete branchNames[currentBranchId];
             await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'branch_config'), { branchNames });
             renderBranchButtons();
@@ -430,8 +443,6 @@
         function renderBranchButtons() {
             const container = document.getElementById('branchListContainer');
             if (!container) return;
-            
-            // Re-render based on branchNames object
             let html = `<button id="btn_overview" onclick="window.switchBranch('overview')" class="branch-btn ${currentBranchId === 'overview' ? 'active' : 'inactive'}">Overview</button>`;
             Object.keys(branchNames).sort().forEach(id => {
                 html += `<button id="btn_${id}" onclick="window.switchBranch('${id}')" class="branch-btn ${currentBranchId === id ? 'active' : 'inactive'}">${branchNames[id]}</button>`;
@@ -439,7 +450,7 @@
             container.innerHTML = html;
         }
 
-        // GOAL MANAGEMENT
+        // การจัดการเป้าหมาย
         window.saveGoal = async () => {
             if (!userId) return;
             const goalVal = parseFloat(document.getElementById('monthlyGoalInput').value) || 0;
@@ -466,23 +477,19 @@
             const resultBox = document.getElementById('aiResultBox');
             const aiContent = document.getElementById('aiContent');
             if (!btn || !aiContent) return;
-
             btn.disabled = true; btn.textContent = "AI Analysis...";
             resultBox.classList.remove('hidden');
             aiContent.textContent = "Gemini AI กำลังรวบรวมข้อมูลรายได้ของทุกสาขาที่คุณมีเพื่อวิเคราะห์ประสิทธิภาพ...";
-
             const branches = Object.keys(branchNames);
             let reportData = "";
             for(const bid of branches) {
                 const act = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'actuals_' + bid));
                 const exp = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'expenses_' + bid));
-                const revenue = act.exists() ? Object.values(act.data().data || {}).reduce((a,b)=>a+b, 0) : 0;
+                const revenue = act.exists() ? Object.values(act.data().data).reduce((a,b)=>a+b, 0) : 0;
                 const cost = exp.exists() ? (exp.data().f + exp.data().u + exp.data().r) : 5500;
                 reportData += `- ${branchNames[bid]}: รายได้สะสม ${revenue} บาท, ค่าใช้จ่ายปีละ ${cost} บาท\n`;
             }
-
             const prompt = `วิเคราะห์พอร์ตธุรกิจตู้กดน้ำหลายสาขา และสรุปคำแนะนำสั้นๆ เป็นภาษาไทย: ${reportData}\nเงินลงทุนต่อตู้คือ 35,000 บาท ช่วยแนะนำกลยุทธ์ขยายสาขาถัดไป`;
-
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -500,27 +507,16 @@
             if (!canvasEl) return;
             const ctx = canvasEl.getContext('2d');
             if (portfolioChart) portfolioChart.destroy();
-
             const branches = Object.keys(branchNames);
             const datasets = [];
             const colorPalette = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#06b6d4'];
-
             for (let i = 0; i < branches.length; i++) {
                 const bid = branches[i];
                 const actSnap = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'actuals_' + bid));
                 const mData = (actSnap.exists() && actSnap.data().data) ? actSnap.data().data : {};
-                datasets.push({
-                    label: branchNames[bid], data: MONTHS_EN.map(m => mData[m] || 0),
-                    borderColor: colorPalette[i % colorPalette.length], 
-                    backgroundColor: colorPalette[i % colorPalette.length] + '11', 
-                    fill: true, tension: 0.4
-                });
+                datasets.push({ label: branchNames[bid], data: MONTHS_EN.map(m => mData[m] || 0), borderColor: colorPalette[i % colorPalette.length], backgroundColor: colorPalette[i % colorPalette.length] + '11', fill: true, tension: 0.4 });
             }
-
-            portfolioChart = new Chart(ctx, {
-                type: 'line', data: { labels: MONTHS_TH, datasets },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
-            });
+            portfolioChart = new Chart(ctx, { type: 'line', data: { labels: MONTHS_TH, datasets }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } } });
         }
 
         window.switchBranch = (branchId) => {
@@ -528,17 +524,9 @@
             const overviewSec = document.getElementById('overviewSection');
             const mainSec = document.getElementById('mainDataSection');
             if (!overviewSec || !mainSec) return;
-
-            renderBranchButtons(); // Update active/inactive state
-
-            if (branchId === 'overview') {
-                overviewSec.classList.remove('hidden'); mainSec.classList.add('hidden');
-                updateOverviewStats(); renderPortfolioChart();
-            } else {
-                overviewSec.classList.add('hidden'); mainSec.classList.remove('hidden');
-                safeText('recoveryTitle', `Break-even Progress: ${branchNames[branchId]}`);
-                if (userId) loadBranchData();
-            }
+            renderBranchButtons();
+            if (branchId === 'overview') { overviewSec.classList.remove('hidden'); mainSec.classList.add('hidden'); updateOverviewStats(); renderPortfolioChart(); } 
+            else { overviewSec.classList.add('hidden'); mainSec.classList.remove('hidden'); safeText('recoveryTitle', `Break-even Progress: ${branchNames[branchId]}`); if (userId) loadBranchData(); }
         };
 
         async function updateOverviewStats() {
@@ -546,10 +534,9 @@
             const tableBody = document.getElementById('portfolioComparisonTable');
             let tableHtml = '';
             const branches = Object.keys(branchNames);
-            
             for (const bid of branches) {
                 const act = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'actuals_' + bid));
-                const revenue = act.exists() ? Object.values(act.data().data || {}).reduce((a,b)=>a+b, 0) : 0;
+                const revenue = act.exists() ? Object.values(act.data().data).reduce((a,b)=>a+b, 0) : 0;
                 const exp = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'expenses_' + bid));
                 const cost = exp.exists() ? (exp.data().f + exp.data().u + exp.data().r) : 5500;
                 totalRev += revenue; totalCost += cost;
@@ -562,14 +549,7 @@
         }
 
         window.toggleBranchNameEdit = (show) => { const group = document.getElementById('branchNameEditGroup'); if (group) group.classList.toggle('hidden', !show); if(show) safeValue('branchNameInput', branchNames[currentBranchId]); };
-        window.saveBranchName = async () => { 
-            const newName = document.getElementById('branchNameInput').value || branchNames[currentBranchId]; 
-            branchNames[currentBranchId] = newName; 
-            renderBranchButtons();
-            safeText('recoveryTitle', `Break-even Progress: ${newName}`); 
-            window.toggleBranchNameEdit(false); 
-            if (userId) await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'branch_config'), { branchNames }); 
-        };
+        window.saveBranchName = async () => { const newName = document.getElementById('branchNameInput').value || branchNames[currentBranchId]; branchNames[currentBranchId] = newName; renderBranchButtons(); safeText('recoveryTitle', `Break-even Progress: ${newName}`); window.toggleBranchNameEdit(false); if (userId) await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'branch_config'), { branchNames }); };
 
         window.calculateROI = () => {
             const dailyVal = parseFloat(document.getElementById('dailyRevenue').value) || 0;
@@ -651,7 +631,7 @@
             }
             const blob = new Blob([JSON.stringify({ branchNames, fullData }, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = `Safaree_Portfolio_Backup_${new Date().toLocaleDateString()}.json`; a.click();
+            const a = document.createElement('a'); a.href = url; a.download = `Portfolio_Backup.json`; a.click();
         };
 
         window.toggleAuthModal = (s) => { const modal = document.getElementById('authModal'); if (modal) modal.style.display = s ? 'flex' : 'none'; };
@@ -684,11 +664,11 @@
         }
 
         window.exportDataToCSV = () => {
-             let csv = "\uFEFFสาขา (Branch),เดือน (Month),รายรับจริง (Actual)\n";
-             MONTHS_EN.forEach((m, i) => { const el = document.getElementById(`actual${m}Revenue`); csv += `${branchNames[currentBranchId]},${MONTHS_TH[i]},${el ? el.value : 0}\n`; });
+             let csv = "\uFEFFเดือน,รายรับจริง\n";
+             MONTHS_EN.forEach((m, i) => { const el = document.getElementById(`actual${m}Revenue`); csv += `${MONTHS_TH[i]},${el ? el.value : 0}\n`; });
              const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
              const url = URL.createObjectURL(blob);
-             const a = document.createElement("a"); a.href = url; a.download = `Vending_ROI_${currentBranchId}.csv`; a.click();
+             const a = document.createElement("a"); a.href = url; a.download = `Vending_ROI.csv`; a.click();
         };
 
         window.onload = async () => {
