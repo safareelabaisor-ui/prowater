@@ -83,7 +83,7 @@
 
     <div class="max-w-6xl mx-auto space-y-8">
         
-        <!-- Header Section -->
+        <!-- Header -->
         <header class="flex flex-col md:flex-row justify-between items-center gap-6 bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200">
             <div class="flex items-center gap-4">
                 <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
@@ -107,7 +107,7 @@
 
             <div class="flex items-center gap-3 bg-slate-100 p-2 px-4 rounded-2xl border border-slate-200">
                 <div class="text-right">
-                    <p id="userEmailDisplay" class="text-sm font-black text-slate-900 italic text-center text-slate-400">Connecting...</p>
+                    <p id="userEmailDisplay" class="text-sm font-black text-slate-900 italic text-center text-slate-400 font-prompt">Connecting...</p>
                     <p class="text-[10px] uppercase font-bold text-slate-500 tracking-widest text-center font-prompt">Account</p>
                 </div>
                 <div class="h-8 w-[1px] bg-slate-300 mx-2"></div>
@@ -118,23 +118,18 @@
             </div>
         </header>
 
-        <div id="statusBanner" class="hidden p-4 bg-amber-50 border border-amber-200 rounded-2xl text-amber-800 text-xs font-bold flex items-center gap-3 animate-pulse">
-             <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-             <span id="statusBannerText"></span>
-        </div>
-
         <!-- PORTFOLIO OVERVIEW SECTION -->
         <div id="overviewSection" class="hidden animate-fade-in space-y-8 font-prompt">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
                 <div class="pastel-card p-8 bg-slate-900 text-white col-span-1 md:col-span-2">
                     <h3 class="text-indigo-400 text-[10px] font-black uppercase tracking-widest mb-4 italic">Portfolio Statistics</h3>
-                    <div class="flex flex-col md:flex-row justify-between items-end gap-6">
+                    <div class="flex flex-col md:flex-row justify-between items-end gap-6 font-prompt">
                         <div>
-                            <p class="text-sm font-bold text-slate-400">รายได้รวมสะสมทั้งหมด (Total Revenue)</p>
+                            <p class="text-sm font-bold text-slate-400 font-prompt">รายได้รวมสะสมทั้งหมด (Total Revenue)</p>
                             <h4 class="text-5xl font-black text-white" id="portfolioTotalRevenue">0.00 ฿</h4>
                         </div>
                         <div class="text-right">
-                            <p class="text-xs font-bold text-indigo-400">กำไรสุทธิสะสมรวม (Total Net Profit)</p>
+                            <p class="text-xs font-bold text-indigo-400 font-prompt">กำไรสุทธิสะสมรวม (Total Net Profit)</p>
                             <h4 class="text-2xl font-black text-white" id="portfolioTotalNet">0.00 ฿</h4>
                         </div>
                     </div>
@@ -144,15 +139,15 @@
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     </div>
                     <h4 class="font-black text-slate-900 uppercase">AI Analytics</h4>
-                    <button onclick="window.generateAIAnalysis()" id="aiBtn" class="w-full py-3 bg-indigo-600 text-white text-xs font-black rounded-xl uppercase">Start Analysis</button>
+                    <button onclick="window.generateAIAnalysis()" id="aiBtn" class="w-full py-3 bg-indigo-600 text-white text-xs font-black rounded-xl uppercase hover:bg-indigo-700 transition">Analyze All Branches</button>
                 </div>
             </div>
 
             <div class="pastel-card p-8">
-                <h3 class="text-xl font-black text-slate-900 mb-6 uppercase italic">Comparison Table (เปรียบเทียบผลงานสะสม)</h3>
+                <h3 class="text-xl font-black text-slate-900 mb-6 uppercase italic font-prompt text-center">Comparison Table (เปรียบเทียบผลงานสะสมทุกสาขา)</h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
-                        <thead><tr class="border-b-2 border-slate-100"><th class="py-4 text-[10px] font-black text-slate-400 uppercase">สาขา (Branch)</th><th class="py-4 text-right text-[10px] font-black text-slate-400 uppercase">รายได้สะสม</th><th class="py-4 text-center text-[10px] font-black text-slate-400 uppercase">ความคืบหน้า</th><th class="py-4 text-[10px] font-black text-slate-400 uppercase">สถานะ</th></tr></thead>
+                        <thead><tr class="border-b-2 border-slate-100"><th class="py-4 text-[10px] font-black text-slate-400 uppercase">สาขา</th><th class="py-4 text-right text-[10px] font-black text-slate-400 uppercase">รายได้สะสม</th><th class="py-4 text-center text-[10px] font-black text-slate-400 uppercase">ความคืบหน้า</th><th class="py-4 text-[10px] font-black text-slate-400 uppercase">สถานะ</th></tr></thead>
                         <tbody id="portfolioComparisonTable"></tbody>
                     </table>
                 </div>
@@ -165,7 +160,7 @@
 
         <!-- MAIN DATA SECTION -->
         <div id="mainDataSection" class="space-y-8 font-prompt">
-            <!-- Cumulative Progress Bar -->
+            <!-- Lifetime Recovery Progress -->
             <div class="pastel-card p-8 border-t-8 border-indigo-600">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
                     <div>
@@ -173,7 +168,7 @@
                             <h2 class="text-xl font-black text-slate-900 uppercase tracking-tight" id="recoveryTitle">Break-even Progress (รวมทั้งหมด)</h2>
                             <button onclick="window.toggleBranchNameEdit(true)" class="text-[10px] font-black text-indigo-500 uppercase hover:underline">แก้ไขชื่อ/ลบ</button>
                         </div>
-                        <p class="text-sm font-bold text-slate-500 mt-1">ติดตามความคืบหน้าการคืนทุน <span class="text-indigo-600 font-black">สะสมทุกปี</span></p>
+                        <p class="text-sm font-bold text-slate-500 mt-1 font-prompt">ติดตามความคืบหน้าการคืนทุน <span class="text-indigo-600 font-black">สะสมทุกปี</span></p>
                     </div>
                     <div class="text-right">
                         <span class="text-3xl font-black text-indigo-600" id="recoveryPercent">0%</span>
@@ -201,7 +196,7 @@
                     <h3 class="text-3xl font-black text-emerald-700" id="annualNetProfitResult">0.00</h3>
                 </div>
                 <div class="pastel-card p-6 border-b-4 border-amber-500 bg-yellow-50">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 font-black">คืนทุนใน (Payback)</p>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 font-black">ระยะเวลาคืนทุน</p>
                     <h3 class="text-2xl font-black text-amber-700" id="paybackPeriodResult">-- ปี -- เดือน</h3>
                 </div>
             </div>
@@ -210,7 +205,7 @@
                 <!-- Left Column Controls -->
                 <div id="branchNameEditGroup" class="hidden pastel-card p-6 bg-slate-50 border-2 border-slate-200 col-span-12 flex gap-4 items-center animate-fade-in">
                     <input type="text" id="branchNameInput" class="input-pastel flex-1" placeholder="ระบุชื่อสาขาใหม่">
-                    <button onclick="window.saveBranchName()" class="bg-indigo-600 text-white px-8 py-3 rounded-2xl font-black shadow-sm font-prompt">บันทึก</button>
+                    <button onclick="window.saveBranchName()" class="bg-indigo-600 text-white px-8 py-3 rounded-2xl font-black shadow-sm font-prompt">บันทึกชื่อ</button>
                     <button onclick="window.deleteCurrentBranch()" class="bg-rose-500 text-white px-8 py-3 rounded-2xl font-black shadow-sm font-prompt">ลบสาขา</button>
                 </div>
 
@@ -221,40 +216,42 @@
                             <span class="w-8 h-8 bg-slate-900 text-white rounded-lg flex items-center justify-center text-xs">01</span>
                             Main Settings
                         </h2>
-                        <div class="space-y-4">
+                        <div class="space-y-4 font-prompt">
                             <div>
-                                <label class="text-[10px] font-black text-slate-500 uppercase block mb-1 font-bold font-prompt">เงินลงทุนเริ่มต้น (฿)</label>
+                                <label class="text-[10px] font-black text-slate-500 uppercase block mb-1 font-bold">เงินลงทุนเริ่มต้น (฿)</label>
                                 <input type="number" id="branchInvestmentInput" value="35000" class="input-pastel w-full text-xl" oninput="window.updateInvestment()">
                             </div>
                             <div>
-                                <label class="text-[10px] font-black text-slate-500 uppercase block mb-1 font-bold font-prompt">รายได้ต่อวัน (ประมาณการ)</label>
+                                <label class="text-[10px] font-black text-slate-500 uppercase block mb-1 font-bold">รายได้ต่อวัน (ประมาณการ)</label>
                                 <input type="number" id="dailyRevenue" value="100" class="input-pastel w-full text-xl" oninput="window.calculateROI()">
                             </div>
                             <div class="p-4 bg-white/50 rounded-xl border border-yellow-200 font-prompt">
-                                <p class="text-[9px] font-black text-yellow-600 uppercase italic">Est. Revenue / Year</p>
+                                <p class="text-[9px] font-black text-yellow-600 uppercase italic">Revenue / Year (Estimate)</p>
                                 <p class="text-lg font-black text-slate-900" id="annualRevenueResult">0.00</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="pastel-card p-6 border-t-4 border-rose-400 font-prompt">
-                        <h2 class="text-xs font-black text-slate-900 mb-4 uppercase underline italic">Operational Costs Config</h2>
-                        <div class="space-y-3">
+                    <div class="pastel-card p-6 border-t-4 border-rose-400">
+                        <h2 class="text-xs font-black text-slate-900 mb-4 uppercase underline font-prompt italic">Operational Cost Config</h2>
+                        <div class="space-y-3 font-prompt">
                             <input type="number" id="costFilter" placeholder="ไส้กรอง" class="input-pastel w-full text-xs font-bold" oninput="window.updateExpenses()">
                             <input type="number" id="costUtility" placeholder="น้ำ/ไฟ" class="input-pastel w-full text-xs font-bold" oninput="window.updateExpenses()">
                             <input type="number" id="costRepair" placeholder="ซ่อมแซม" class="input-pastel w-full text-xs font-bold" oninput="window.updateExpenses()">
                         </div>
                     </div>
 
+                    <!-- 7 FUNDS SECTION (FIXED EDIT BUTTON) -->
                     <div class="pastel-card p-6 border-t-4 border-purple-400">
                          <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-xs font-black text-slate-900 uppercase italic font-prompt">5 Funds (กองทุน)</h2>
-                            <button id="editFundsButton" onclick="window.toggleEditMode(true)" disabled class="text-[10px] font-black text-indigo-600 uppercase hover:underline">Edit Funds</button>
+                            <h2 class="text-xs font-black text-slate-900 uppercase italic font-prompt">7 Funds (การจัดการกองทุน)</h2>
+                            <!-- ปรับแก้ตรงนี้เพื่อให้พร้อมใช้งาน -->
+                            <button id="editFundsButton" onclick="window.toggleEditMode(true)" class="text-[10px] font-black text-indigo-600 uppercase hover:text-indigo-800 underline transition-all">Edit Funds</button>
                         </div>
-                        <div id="fundAllocationContainer" class="space-y-2"></div>
-                        <div id="fundEditContainer" class="hidden mt-4 pt-4 border-t space-y-2 font-prompt">
+                        <div id="fundAllocationContainer" class="space-y-2 font-prompt"></div>
+                        <div id="fundEditContainer" class="hidden mt-4 pt-4 border-t space-y-2">
                             <div id="fundEditInputs" class="space-y-2"></div>
-                            <button onclick="window.saveFundNames()" class="w-full py-2 bg-indigo-600 text-white text-[10px] font-black rounded-lg uppercase shadow-md">บันทึกชื่อกองทุน</button>
+                            <button onclick="window.saveFundNames()" class="w-full py-2 bg-indigo-600 text-white text-[10px] font-black rounded-lg uppercase shadow-md font-prompt hover:bg-black transition">บันทึกข้อมูลกองทุน</button>
                         </div>
                     </div>
                 </div>
@@ -262,25 +259,24 @@
                 <!-- Right Column Logs -->
                 <div class="lg:col-span-8 space-y-6">
                     <div class="pastel-card p-8 highlight-yellow">
-                        <h2 class="text-lg font-black text-slate-900 mb-6 uppercase underline italic font-prompt">Quarterly Summary (สรุปรายไตรมาส)</h2>
-                        <div id="quarterlyBreakdown" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                        <h2 class="text-lg font-black text-slate-900 mb-6 uppercase underline italic font-prompt">Quarterly Performance (สรุปรายไตรมาส)</h2>
+                        <div id="quarterlyBreakdown" class="grid grid-cols-1 md:grid-cols-2 gap-4 font-prompt text-sm"></div>
                     </div>
 
-                    <!-- UPDATED: FILTER & SERVICE HISTORY (WITH APPOINTMENTS) -->
+                    <!-- MAINTENANCE SYSTEM -->
                     <div id="maintenanceCard" class="pastel-card p-8 border-l-8 border-emerald-400 bg-white">
                         <div class="flex justify-between items-start mb-6 font-prompt">
                             <div>
                                 <h2 class="text-xl font-black text-slate-900 uppercase italic">Filter & Service History</h2>
-                                <p class="text-sm font-bold text-slate-500">จัดการรอบการเปลี่ยนไส้กรองและงานซ่อมบำรุง</p>
+                                <p class="text-sm font-bold text-slate-500 font-prompt">จัดการรอบการเปลี่ยนไส้กรองและงานซ่อมบำรุง</p>
                             </div>
                             <div id="maintenanceBadge" class="px-3 py-1 rounded-full text-[10px] font-black uppercase">--</div>
                         </div>
                         
-                        <!-- Configuration -->
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-8 p-6 bg-slate-50 rounded-2xl border border-slate-100 shadow-inner">
-                            <div class="md:col-span-4">
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-8 p-4 bg-slate-50 rounded-2xl border border-slate-100 shadow-inner">
+                            <div class="md:col-span-4 font-prompt">
                                 <label class="text-[10px] font-black text-slate-400 uppercase block mb-1">รอบการเปลี่ยน (Cycle Range)</label>
-                                <div class="flex gap-2">
+                                <div class="flex gap-2 font-prompt">
                                     <input type="number" id="maintCycle" value="6" class="input-pastel w-2/3 text-sm font-bold" oninput="window.updateNextChangeDate()">
                                     <select id="maintUnit" onchange="window.updateNextChangeDate()" class="input-pastel w-1/3 text-[10px] font-black text-indigo-600 cursor-pointer">
                                         <option value="months">เดือน</option>
@@ -288,46 +284,46 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="md:col-span-3">
+                            <div class="md:col-span-3 font-prompt">
                                 <label class="text-[10px] font-black text-slate-400 uppercase block mb-1">เปลี่ยนล่าสุด (Last)</label>
                                 <input type="date" id="lastFilterDate" class="input-pastel w-full text-sm font-bold" onchange="window.updateNextChangeDate()">
                             </div>
-                            <div class="md:col-span-5 flex items-end gap-2">
+                            <div class="md:col-span-5 flex items-end gap-2 font-prompt">
                                 <div class="flex-1">
                                     <label class="text-[10px] font-black text-slate-400 uppercase block mb-1">นัดถัดไป (Next Due)</label>
                                     <div id="nextChangeDisplay" class="bg-white border border-slate-200 p-2 rounded-xl text-sm font-black text-indigo-600 text-center shadow-sm">--/--/----</div>
                                 </div>
-                                <button onclick="window.scheduleAppointment()" title="บันทึกวันนัดหมายนี้" class="bg-indigo-600 text-white p-2.5 rounded-xl hover:bg-black transition shadow-lg mb-0.5 flex-shrink-0">
+                                <button onclick="window.scheduleAppointment()" title="สร้างรายการนัดหมาย" class="bg-indigo-600 text-white p-3 rounded-xl hover:bg-black transition shadow-lg flex-shrink-0">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Upcoming Appointments List -->
+                        <!-- Upcoming -->
                         <div class="mb-8 space-y-4">
                              <h3 class="text-xs font-black text-indigo-500 uppercase tracking-widest border-b border-indigo-100 pb-2 font-prompt flex items-center gap-2">
                                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                  นัดหมายที่กำลังมาถึง (Upcoming)
                              </h3>
                              <div id="upcomingApptsList" class="space-y-2">
-                                 <p class="text-center text-slate-300 py-6 text-xs italic">ไม่มีการนัดหมายที่รอดำเนินการ</p>
+                                 <p class="text-center text-slate-300 py-6 text-xs italic font-prompt">ไม่มีนัดหมายใหม่</p>
                              </div>
                         </div>
 
-                        <!-- Log History List -->
-                        <div class="space-y-4">
-                             <h3 class="text-xs font-black text-slate-500 uppercase tracking-widest border-b pb-2 italic font-prompt">ประวัติสะสม (Service History)</h3>
+                        <!-- History -->
+                        <div class="space-y-4 font-prompt">
+                             <h3 class="text-xs font-black text-slate-500 uppercase tracking-widest border-b pb-2 italic">ประวัติการดูแลรักษาสะสม (History)</h3>
                              <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 mb-4 space-y-4 shadow-sm">
-                                 <div class="grid grid-cols-1 md:grid-cols-4 gap-3 font-prompt">
-                                     <select id="logType" class="input-pastel text-xs font-bold">
+                                 <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                                     <select id="logType" class="input-pastel text-xs font-bold font-prompt">
                                          <option value="Filter">เปลี่ยนไส้กรอง</option>
                                          <option value="Repair">งานซ่อม/อะไหล่</option>
                                          <option value="Check">ตรวจเช็ค</option>
                                      </select>
                                      <input type="date" id="logDate" class="input-pastel text-xs font-bold">
-                                     <input type="text" id="logMemo" placeholder="หมายเหตุ/รายละเอียด..." class="input-pastel text-xs md:col-span-2 font-bold">
+                                     <input type="text" id="logMemo" placeholder="รายละเอียด..." class="input-pastel text-xs md:col-span-2 font-bold font-prompt">
                                  </div>
-                                 <button onclick="window.addMaintLog()" class="w-full md:w-auto px-8 py-3 bg-slate-900 text-white text-[10px] font-black rounded-xl hover:bg-black transition shadow-lg uppercase font-prompt">บันทึกประวัติ (Manual)</button>
+                                 <button onclick="window.addMaintLog()" class="w-full md:w-auto px-8 py-3 bg-slate-900 text-white text-[10px] font-black rounded-xl hover:bg-black transition shadow-lg font-prompt uppercase">บันทึกประวัติ</button>
                              </div>
                              <div id="maintLogsList" class="space-y-2 max-h-[300px] overflow-y-auto pr-2"></div>
                         </div>
@@ -337,27 +333,27 @@
                     <div class="pastel-card p-8">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 font-prompt">
                             <div class="flex items-center gap-3">
-                                <h2 class="text-lg font-black text-slate-900 uppercase italic underline underline-offset-4">Actual Monthly Records</h2>
+                                <h2 class="text-lg font-black text-slate-900 uppercase italic underline underline-offset-4 font-prompt">Actual Monthly Income</h2>
                                 <select id="incomeYearSelector" onchange="window.handleYearChange()" class="bg-indigo-50 border-none text-indigo-600 font-black text-sm rounded-xl px-3 py-1 focus:ring-2 focus:ring-indigo-300 shadow-sm cursor-pointer font-prompt">
                                 </select>
                             </div>
-                            <button onclick="window.exportDataToCSV()" class="px-4 py-2 bg-slate-900 text-white text-[10px] font-black rounded-xl shadow-sm hover:bg-black transition">Export CSV</button>
+                            <button onclick="window.exportDataToCSV()" class="px-4 py-2 bg-slate-900 text-white text-[10px] font-black rounded-xl shadow-sm hover:bg-black transition font-prompt uppercase">Export CSV</button>
                         </div>
                         <div id="monthlyInputGrid" class="grid grid-cols-3 sm:grid-cols-6 gap-3 mb-6 font-prompt"></div>
                         <div class="mt-8 p-8 bg-slate-900 rounded-[2rem] text-white flex flex-col md:flex-row justify-between items-center gap-4 shadow-xl">
                             <div>
-                                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-widest font-prompt" id="yearlyTotalLabel">รายรับรวมปี 2025</p>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-widest font-prompt font-black" id="yearlyTotalLabel">รายรับปี 2025</p>
                                 <h4 class="text-4xl font-black text-white" id="actualYearlyTotal">0.00</h4>
                             </div>
-                             <a href="https://drive.google.com/drive/folders/1pq6IX-3y4X9l3S3IVv8xHNANK24wsU3w?usp=sharing" target="_blank" class="px-6 py-2 bg-indigo-500 text-white font-black rounded-xl shadow-lg text-xs hover:bg-indigo-600 transition uppercase font-prompt">คลังข้อมูล Drive</a>
+                             <a href="https://drive.google.com/drive/folders/1pq6IX-3y4X9l3S3IVv8xHNANK24wsU3w?usp=sharing" target="_blank" class="px-6 py-2 bg-indigo-500 text-white font-black rounded-xl shadow-lg text-xs hover:bg-indigo-600 transition font-prompt uppercase">Drive Evidence</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="flex flex-col md:flex-row justify-between items-center gap-4 py-8 px-4 text-[9px] text-slate-400 font-black uppercase tracking-[0.4em]">
-             <p id="userIdDisplay">AUTHENTICATED: NOT_LOADED</p>
-             <p>© 2025 SAFAREE ENTERPRISE</p>
+             <p id="userIdDisplay">AUTHENTICATED: NOT_CONNECTED</p>
+             <p>© 2025 SAFAREE ENTERPRISE - ROI MANAGEMENT</p>
         </div>
     </div>
 
@@ -365,13 +361,13 @@
     <div id="authModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
         <div class="bg-white rounded-[2.5rem] shadow-2xl p-10 w-full max-w-md border border-slate-200 text-center font-prompt">
             <h3 class="text-2xl font-black text-slate-900 uppercase mb-6 italic">Secure Portal Access</h3>
-            <div id="authMessage" class="hidden p-3 bg-rose-50 text-rose-600 text-xs font-black rounded-xl text-center border mb-4"></div>
+            <div id="authMessage" class="hidden p-3 bg-rose-50 text-rose-600 text-xs font-black rounded-xl text-center border mb-4 font-bold"></div>
             <form id="authForm" class="space-y-4 text-left">
                 <input type="email" id="authEmail" required class="input-pastel w-full font-bold" placeholder="Email Address">
                 <input type="password" id="authPassword" required class="input-pastel w-full font-bold" placeholder="Password">
                 <div class="grid grid-cols-2 gap-3 pt-4">
-                    <button type="button" onclick="window.processAuth('login')" class="py-4 text-white bg-slate-900 font-black rounded-2xl hover:bg-black transition shadow-lg">Login</button>
-                    <button type="button" onclick="window.processAuth('register')" class="py-4 text-slate-900 bg-white border-2 border-slate-900 font-black rounded-2xl hover:bg-slate-50 transition">Register</button>
+                    <button type="button" onclick="window.processAuth('login')" class="py-4 text-white bg-slate-900 font-black rounded-2xl hover:bg-black transition shadow-lg uppercase">Login</button>
+                    <button type="button" onclick="window.processAuth('register')" class="py-4 text-slate-900 bg-white border-2 border-slate-900 font-black rounded-2xl hover:bg-slate-50 transition uppercase">Register</button>
                 </div>
             </form>
             <button onclick="window.toggleAuthModal(false)" class="w-full mt-6 text-xs font-black text-slate-400 hover:text-slate-600 uppercase transition tracking-widest font-prompt">Close</button>
@@ -391,25 +387,25 @@
             appId: "1:411846039710:web:d775796cf016895886438f"
         };
         const apiKey = "";
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'vending-yearly-system-v12';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'vending-ultimate-suite-v16';
         const MONTHS_EN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const MONTHS_TH = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
         
         let app, db, auth, userId = null;
-        let fundNames = Array.from({length: 5}, (_, i) => `ทุน ${i+1}`);
+        let fundNames = Array.from({length: 7}, (_, i) => `ทุนที่ ${i+1}`); // Initial 7 funds
         let currentCalculatedExpenses = 5500;
         let branchInvestment = 35000;
         let currentBranchId = 'branch1';
         let currentYear = new Date().getFullYear();
         let branchNames = { branch1: 'สาขา 1 (Main)' };
         let maintLogs = [];
-        let maintAppointments = []; // Upcoming
+        let maintAppointments = [];
         let portfolioChart = null;
 
         const fmt = (v) => new Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
         const safeText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
 
-        // FIREBASE PERSISTENCE
+        // FIREBASE HELPERS
         async function setDocWithRetry(docRef, data) {
             if (!userId) return;
             let delay = 1000;
@@ -425,7 +421,7 @@
             if (el && txt) { txt.textContent = text; el.classList.remove('hidden'); }
         };
 
-        // YEAR MANAGEMENT
+        // YEAR MGMT
         function initYearSelector() {
             const selector = document.getElementById('incomeYearSelector');
             if (!selector) return;
@@ -441,12 +437,10 @@
         window.handleYearChange = () => {
             currentYear = parseInt(document.getElementById('incomeYearSelector').value);
             document.getElementById('yearlyTotalLabel').textContent = `รายรับรวมปี ${currentYear}`;
-            if (userId) {
-                loadYearSpecificData();
-            }
+            if (userId) loadYearSpecificData();
         };
 
-        // LIFETIME RECOVERY (สะสมทุกปี)
+        // LIFETIME RECOVERY
         async function calculateLifetimeRecovery() {
             if (!userId) return;
             let totalLifetimeRevenue = 0;
@@ -457,6 +451,7 @@
             safeText('recoveryPercent', pct.toFixed(1) + "%");
             const fill = document.getElementById('recoveryFill'); if (fill) fill.style.width = pct + "%";
             safeText('recoveredAmountText', `Lifetime Recovered: ${fmt(totalLifetimeRevenue)} ฿`);
+            return totalLifetimeRevenue;
         }
 
         // BRANCH MGMT
@@ -478,9 +473,12 @@
         };
 
         function renderBranchButtons() {
-            const container = document.getElementById('branchListContainer'); if (!container) return;
+            const container = document.getElementById('branchListContainer');
+            if (!container) return;
             let html = `<button id="btn_overview" onclick="window.switchBranch('overview')" class="branch-btn ${currentBranchId === 'overview' ? 'active' : 'inactive'}">Overview</button>`;
-            Object.keys(branchNames).sort().forEach(id => { html += `<button id="btn_${id}" onclick="window.switchBranch('${id}')" class="branch-btn ${currentBranchId === id ? 'active' : 'inactive'}">${branchNames[id]}</button>`; });
+            Object.keys(branchNames).sort().forEach(id => {
+                html += `<button id="btn_${id}" onclick="window.switchBranch('${id}')" class="branch-btn ${currentBranchId === id ? 'active' : 'inactive'}">${branchNames[id]}</button>`;
+            });
             container.innerHTML = html;
         }
 
@@ -489,19 +487,30 @@
             branchInvestment = parseFloat(document.getElementById('branchInvestmentInput').value) || 0;
             safeText('displayTotalInvestment', fmt(branchInvestment));
             safeText('displayInvestLabel', `Invest: ${fmt(branchInvestment)} ฿`);
+            renderFunds();
             window.calculateROI();
             calculateLifetimeRecovery(); 
             if (userId) setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'config_' + currentBranchId), { branchInvestment });
         };
 
         window.calculateROI = () => {
-            const daily = parseFloat(document.getElementById('dailyRevenue').value) || 0;
+            const dailyEl = document.getElementById('dailyRevenue');
+            if(!dailyEl) return;
+            const daily = parseFloat(dailyEl.value) || 0;
             const annRev = daily * 365; const annProf = annRev - currentCalculatedExpenses;
             safeText('annualRevenueResult', fmt(annRev)); safeText('annualNetProfitResult', fmt(annProf));
             const pb = document.getElementById('paybackPeriodResult');
-            if (pb) { if (annProf <= 0) pb.textContent = "ไม่คืนทุน"; else { const y = Math.floor(branchInvestment / annProf); const m = Math.ceil(((branchInvestment/annProf)-y)*12); pb.textContent = `${y} ปี ${m} เดือน`; } }
-            let html = ''; for(let q=1; q<=4; q++) { html += `<div class="p-4 bg-white rounded-xl border border-slate-200 flex justify-between items-center shadow-sm text-xs font-black font-prompt"><span>Quarter ${q}</span><span class="text-indigo-600">${fmt((daily*91.25)-(currentCalculatedExpenses/4))}</span></div>`; }
-            document.getElementById('quarterlyBreakdown').innerHTML = html;
+            if (pb) {
+                if (annProf <= 0) pb.textContent = "ไม่คืนทุน";
+                else { const y = Math.floor(branchInvestment / annProf); const m = Math.ceil(((branchInvestment/annProf)-y)*12); pb.textContent = `${y} ปี ${m} เดือน`; }
+            }
+            const qBreak = document.getElementById('quarterlyBreakdown');
+            if (qBreak) {
+                let html = ''; for(let q=1; q<=4; q++) { 
+                    html += `<div class="p-4 bg-white rounded-xl border border-slate-200 flex justify-between items-center shadow-sm text-xs font-black font-prompt font-black"><span>Q${q} Profit</span><span class="text-indigo-600">${fmt((daily*91.25)-(currentCalculatedExpenses/4))}</span></div>`; 
+                }
+                qBreak.innerHTML = html;
+            }
         };
 
         window.updateExpenses = () => {
@@ -513,7 +522,7 @@
             if (userId) setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'expenses_' + currentBranchId), { f, u, r });
         };
 
-        // SERVICE LOGS & APPOINTMENTS (ADVANCED)
+        // MAINTENANCE & APPOINTMENTS
         window.updateNextChangeDate = async () => {
             const cycleEl = document.getElementById('maintCycle');
             const unitEl = document.getElementById('maintUnit');
@@ -531,47 +540,34 @@
             if (unit === 'years') nextDate.setFullYear(nextDate.getFullYear() + cycle);
             else nextDate.setMonth(nextDate.getMonth() + cycle);
             
-            const dateStr = `${nextDate.getDate().toString().padStart(2,'0')}/${(nextDate.getMonth()+1).toString().padStart(2,'0')}/${nextDate.getFullYear()}`;
-            nextDispEl.textContent = dateStr;
-
+            nextDispEl.textContent = `${nextDate.getDate().toString().padStart(2,'0')}/${(nextDate.getMonth()+1).toString().padStart(2,'0')}/${nextDate.getFullYear()}`;
             const today = new Date(); const diff = Math.ceil((nextDate - today) / (86400000));
-            if (diff < 0) { badge.className = "px-3 py-1 rounded-full text-[10px] font-black uppercase bg-rose-500 text-white animate-pulse shadow-md"; badge.textContent = `EXPIRED: Overdue ${Math.abs(diff)} DAYS`; }
-            else if (diff < 15) { badge.className = "px-3 py-1 rounded-full text-[10px] font-black uppercase bg-amber-400 text-white shadow-md"; badge.textContent = `DUE SOON: ${diff} DAYS`; }
-            else { badge.className = "px-3 py-1 rounded-full text-[10px] font-black uppercase bg-emerald-500 text-white shadow-md"; badge.textContent = `HEALTHY: ${diff} DAYS`; }
-
+            if (diff < 0) { badge.className = "px-3 py-1 rounded-full text-[10px] font-black uppercase bg-rose-500 text-white animate-pulse shadow-md"; badge.textContent = `EXPIRED`; }
+            else if (diff < 15) { badge.className = "px-3 py-1 rounded-full text-[10px] font-black uppercase bg-amber-400 text-white shadow-md"; badge.textContent = `DUE SOON`; }
+            else { badge.className = "px-3 py-1 rounded-full text-[10px] font-black uppercase bg-emerald-500 text-white shadow-md"; badge.textContent = `HEALTHY`; }
             if (userId) await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'maint_config_' + currentBranchId), { cycle, unit, lastDate: lastDateStr });
         };
 
         window.scheduleAppointment = async () => {
             if (!userId) return;
-            const nextDateDisplay = document.getElementById('nextChangeDisplay').textContent;
-            if (nextDateDisplay === "--/--/----") return;
-            
-            // Format from DD/MM/YYYY to YYYY-MM-DD for consistency
-            const parts = nextDateDisplay.split('/');
+            const nextDue = document.getElementById('nextChangeDisplay').textContent;
+            if (nextDue === "--/--/----") return;
+            const parts = nextDue.split('/');
             const isoDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
-            
-            const newAppt = { id: Date.now(), type: 'Filter Replacement', date: isoDate, memo: 'นัดหมายเปลี่ยนไส้กรองตามรอบ (Scheduled)' };
-            maintAppointments.push(newAppt);
+            maintAppointments.push({ id: Date.now(), type: 'Scheduled Filter', date: isoDate, memo: 'นัดหมายเปลี่ยนไส้กรองอัตโนมัติ' });
             await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'maint_appts_' + currentBranchId), { appts: maintAppointments });
-            renderMaintLogs(); 
+            renderMaintLogs();
         };
 
         window.completeAppointment = async (apptId) => {
             const appt = maintAppointments.find(a => a.id === apptId);
             if (!appt) return;
-            // Move to History
-            maintLogs.unshift({ ...appt, id: Date.now(), memo: 'เสร็จสิ้น: ' + appt.memo });
+            maintLogs.unshift({ ...appt, id: Date.now(), memo: 'สำเร็จ: ' + appt.memo });
             maintAppointments = maintAppointments.filter(a => a.id !== apptId);
-            
-            // Update "Last Change Date" UI
             document.getElementById('lastFilterDate').value = appt.date;
-            
             await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'maint_appts_' + currentBranchId), { appts: maintAppointments });
             await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'maint_logs_' + currentBranchId), { logs: maintLogs });
-            
-            window.updateNextChangeDate();
-            renderMaintLogs();
+            window.updateNextChangeDate(); renderMaintLogs();
         };
 
         window.addMaintLog = async () => {
@@ -586,49 +582,68 @@
         };
 
         function renderMaintLogs() {
-            const upContainer = document.getElementById('upcomingApptsList');
-            const histContainer = document.getElementById('maintLogsList');
-            if(!upContainer || !histContainer) return;
+            const upCont = document.getElementById('upcomingApptsList');
+            const histCont = document.getElementById('maintLogsList');
+            if(!upCont || !histCont) return;
 
-            // Render Upcoming
-            if (maintAppointments.length === 0) upContainer.innerHTML = `<p class="text-center text-slate-300 py-6 text-xs italic">ไม่มีการนัดหมายที่รอดำเนินการ</p>`;
-            else upContainer.innerHTML = maintAppointments.map(a => `
-                <div class="flex items-center justify-between p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100 shadow-sm animate-fade-in group">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-indigo-600 text-white rounded-full flex items-center justify-center shadow-md"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div>
-                        <div><p class="text-[13px] font-black text-indigo-900">${a.memo}</p><p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">${a.date}</p></div>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="window.completeAppointment(${a.id})" class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-[9px] font-black uppercase shadow-sm hover:bg-black transition">Mark Done</button>
-                        <button onclick="window.deleteAppointment(${a.id})" class="text-slate-300 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition px-2">Cancel</button>
-                    </div>
-                </div>`).join('');
+            if (maintAppointments.length === 0) upCont.innerHTML = `<p class="text-center text-slate-300 py-6 text-xs italic font-prompt">ไม่มีนัดหมายใหม่</p>`;
+            else upCont.innerHTML = maintAppointments.map(a => `<div class="flex items-center justify-between p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100 shadow-sm group">
+                <div class="flex items-center gap-4 font-prompt font-black"><div class="w-10 h-10 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">!</div>
+                <div><p class="text-[13px] font-black text-indigo-900 font-prompt">${a.memo}</p><p class="text-[10px] font-bold text-indigo-400">${a.date}</p></div></div>
+                <div class="flex gap-2"><button onclick="window.completeAppointment(${a.id})" class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-[9px] font-black uppercase">Done</button>
+                <button onclick="window.deleteAppointment(${a.id})" class="text-slate-300 hover:text-rose-500 transition px-2">X</button></div></div>`).join('');
 
-            // Render History
-            if (maintLogs.length === 0) histContainer.innerHTML = `<p class="text-center text-slate-300 py-10 text-xs italic">ไม่มีประวัติสะสม</p>`;
-            else histContainer.innerHTML = maintLogs.map(l => `
-                <div class="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100 shadow-sm group hover:border-indigo-200 transition-all">
-                    <div class="flex items-center gap-4"><span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-700 text-[9px] font-black uppercase">${l.type}</span>
-                    <div><p class="text-[12px] font-black text-slate-800">${l.memo}</p><p class="text-[9px] font-bold text-slate-400 tracking-tighter">${l.date}</p></div></div>
-                    <button onclick="window.deleteLog(${l.id})" class="text-slate-200 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition px-2">Delete</button>
-                </div>`).join('');
+            if (maintLogs.length === 0) histCont.innerHTML = `<p class="text-center text-slate-300 py-10 text-xs italic font-prompt">ไม่มีประวัติสะสม</p>`;
+            else histCont.innerHTML = maintLogs.map(l => `<div class="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100 shadow-sm group hover:border-indigo-200 transition-all font-prompt">
+                <div class="flex items-center gap-4"><span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-700 text-[9px] font-black uppercase font-prompt">${l.type}</span>
+                <div><p class="text-[12px] font-black text-slate-800 font-prompt">${l.memo}</p><p class="text-[9px] font-bold text-slate-400 uppercase">${l.date}</p></div></div>
+                <button onclick="window.deleteLog(${l.id})" class="text-slate-200 hover:text-rose-500 transition px-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></div>`).join('');
         }
 
-        window.deleteAppointment = async (id) => {
-            if (!confirm("ยกเลิกการนัดหมาย?")) return;
-            maintAppointments = maintAppointments.filter(a => a.id !== id);
-            await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'maint_appts_' + currentBranchId), { appts: maintAppointments });
-            renderMaintLogs();
-        };
+        window.deleteAppointment = async (id) => { if (!confirm("ยกเลิก?")) return; maintAppointments = maintAppointments.filter(a => a.id !== id); await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'maint_appts_' + currentBranchId), { appts: maintAppointments }); renderMaintLogs(); };
+        window.deleteLog = async (id) => { if (!confirm("ลบประวัติ?")) return; maintLogs = maintLogs.filter(l => l.id !== id); await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'maint_logs_' + currentBranchId), { logs: maintLogs }); renderMaintLogs(); };
 
-        window.deleteLog = async (id) => {
-            if (!confirm("ลบประวัติรายการนี้?")) return;
-            maintLogs = maintLogs.filter(l => l.id !== id);
-            await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'maint_logs_' + currentBranchId), { logs: maintLogs });
-            renderMaintLogs();
-        };
+        // PORTFOLIO LOGIC
+        async function updatePortfolioStats() {
+            let totalRev = 0; let totalNetProfit = 0;
+            const tableBody = document.getElementById('portfolioComparisonTable');
+            let tableHtml = '';
+            const bids = Object.keys(branchNames);
+            for (const bid of bids) {
+                let branchLifetimeRevenue = 0;
+                const years = [2024, 2025, 2026, 2027];
+                for(const y of years) {
+                    const snap = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', `actuals_${bid}_${y}`)).catch(()=>null);
+                    if(snap && snap.exists()) branchLifetimeRevenue += Object.values(snap.data().data).reduce((a,b)=>a+(parseFloat(b)||0), 0);
+                }
+                const confSnap = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'config_' + bid)).catch(()=>null);
+                const invest = (confSnap && confSnap.exists()) ? (confSnap.data().branchInvestment || 35000) : 35000;
+                const expSnap = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'expenses_' + bid)).catch(()=>null);
+                const annualExpense = (expSnap && expSnap.exists()) ? (parseFloat(expSnap.data().f) + parseFloat(expSnap.data().u) + parseFloat(expSnap.data().r)) : 5500;
+                const lifetimeNet = branchLifetimeRevenue - (2 * annualExpense);
+                totalRev += branchLifetimeRevenue; totalNetProfit += lifetimeNet;
+                const pct = Math.min(100, (branchLifetimeRevenue / invest) * 100);
+                tableHtml += `<tr class="border-b border-slate-50 font-prompt"><td class="py-4 font-black text-sm text-slate-900">${branchNames[bid]}</td><td class="py-4 font-bold text-slate-600 text-right font-prompt">${fmt(branchLifetimeRevenue)} ฿</td><td class="py-4 text-center font-prompt"><div class="w-32 h-2.5 bg-slate-100 rounded-full mx-auto overflow-hidden shadow-inner"><div class="bg-indigo-500 h-full transition-all duration-1000" style="width:${pct}%"></div></div><p class="text-[9px] font-black text-indigo-500 mt-1">${pct.toFixed(1)}%</p></td><td class="py-4 text-right font-prompt"><span class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase ${pct >= 100 ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600'}">${pct >= 100 ? 'RECOVERED' : 'ON TRACK'}</span></td></tr>`;
+            }
+            if(tableBody) tableBody.innerHTML = tableHtml || `<tr><td colspan="4" class="text-center py-10">No Data</td></tr>`;
+            safeText('portfolioTotalRevenue', fmt(totalRev) + " ฿");
+            safeText('portfolioTotalNet', fmt(totalNetProfit) + " ฿");
+        }
 
-        // DATA LOADING
+        async function renderPortfolioChart() {
+            const canvas = document.getElementById('portfolioChart'); if(!canvas) return;
+            const ctx = canvas.getContext('2d'); if(portfolioChart) portfolioChart.destroy();
+            const colors = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#06b6d4'];
+            const datasets = []; const bids = Object.keys(branchNames);
+            for(let i=0; i<bids.length; i++) {
+                const act = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'actuals_' + bids[i] + '_' + currentYear)).catch(()=>null);
+                const mData = (act && act.exists()) ? act.data().data : {};
+                datasets.push({ label: branchNames[bids[i]], data: MONTHS_EN.map(m => mData[m] || 0), borderColor: colors[i % colors.length], backgroundColor: colors[i % colors.length] + '11', fill: true, tension: 0.4 });
+            }
+            portfolioChart = new Chart(ctx, { type: 'line', data: { labels: MONTHS_TH, datasets }, options: { responsive: true, maintainAspectRatio: false } });
+        }
+
+        // APP INITIALIZATION
         window.switchBranch = async (branchId) => {
             currentBranchId = branchId;
             const ovSec = document.getElementById('overviewSection'); const mainSec = document.getElementById('mainDataSection');
@@ -647,8 +662,9 @@
             const confSnap = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'config_' + currentBranchId)).catch(()=>null);
             if(confSnap && confSnap.exists()) {
                 branchInvestment = confSnap.data().branchInvestment || 35000;
-                fundNames = confSnap.data().fundNames || fundNames;
-            } else { branchInvestment = 35000; fundNames = Array.from({length: 5}, (_, i) => `ทุน ${i+1}`); }
+                fundNames = confSnap.data().fundNames || Array.from({length: 7}, (_, i) => `ทุนที่ ${i+1}`);
+            } else { branchInvestment = 35000; fundNames = Array.from({length: 7}, (_, i) => `ทุนที่ ${i+1}`); }
+            
             document.getElementById('branchInvestmentInput').value = branchInvestment;
             safeText('displayTotalInvestment', fmt(branchInvestment));
             safeText('displayInvestLabel', `Invest: ${fmt(branchInvestment)} ฿`);
@@ -660,17 +676,10 @@
             window.updateExpenses();
 
             const mConfig = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'maint_config_' + currentBranchId)).catch(()=>null);
-            if(mConfig && mConfig.exists()) { 
-                const data = mConfig.data();
-                document.getElementById('maintCycle').value = data.cycle || 6; 
-                document.getElementById('maintUnit').value = data.unit || 'months';
-                document.getElementById('lastFilterDate').value = data.lastDate || ""; 
-                window.updateNextChangeDate(); 
-            } else { document.getElementById('maintCycle').value = 6; document.getElementById('maintUnit').value = 'months'; document.getElementById('lastFilterDate').value = ""; safeText('nextChangeDisplay', "--/--/----"); }
-
+            if(mConfig && mConfig.exists()) { const d = mConfig.data(); document.getElementById('maintCycle').value = d.cycle || 6; document.getElementById('maintUnit').value = d.unit || 'months'; document.getElementById('lastFilterDate').value = d.lastDate || ""; window.updateNextChangeDate(); }
+            
             const mLogs = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'maint_logs_' + currentBranchId)).catch(()=>null);
             maintLogs = (mLogs && mLogs.exists()) ? mLogs.data().logs : [];
-            
             const mAppts = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'maint_appts_' + currentBranchId)).catch(()=>null);
             maintAppointments = (mAppts && mAppts.exists()) ? mAppts.data().appts : [];
             renderMaintLogs();
@@ -695,7 +704,7 @@
         window.processAuth = async (action) => {
             const email = document.getElementById('authEmail').value; const pass = document.getElementById('authPassword').value;
             try { if (action === 'login') await signInWithEmailAndPassword(auth, email, pass); else await createUserWithEmailAndPassword(auth, email, pass); window.toggleAuthModal(false); } 
-            catch (e) { alert(e.message); }
+            catch (e) { document.getElementById('authMessage').textContent = e.message; document.getElementById('authMessage').classList.remove('hidden'); }
         };
 
         window.onload = async () => {
@@ -711,21 +720,21 @@
                 const authBtn = document.getElementById('authButton');
                 if (authBtn) { authBtn.textContent = isLoggedIn ? "LOGOUT" : "LOGIN"; authBtn.onclick = isLoggedIn ? () => signOut(auth) : () => window.toggleAuthModal(true); }
                 safeText('userIdDisplay', "UID: " + (userId || "OFFLINE"));
+                // ปลดล็อกปุ่ม Edit Funds ทันทีเมื่อ Auth เสร็จสิ้น
+                const editFundsBtn = document.getElementById('editFundsButton');
+                if (editFundsBtn) editFundsBtn.disabled = !userId;
                 if (userId) loadBranchData(); else renderBranchButtons();
             });
-            window.calculateROI();
         };
 
         window.toggleAuthModal = (s) => document.getElementById('authModal').style.display = s ? 'flex' : 'none';
         window.saveBranchName = async () => { const newName = document.getElementById('branchNameInput').value; if(!newName) return; branchNames[currentBranchId] = newName; renderBranchButtons(); window.toggleBranchNameEdit(false); if(userId) await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'branch_config'), { branchNames }); };
         window.toggleBranchNameEdit = (s) => { const group = document.getElementById('branchNameEditGroup'); if (group) group.classList.toggle('hidden', !s); if(s) document.getElementById('branchNameInput').value = branchNames[currentBranchId]; };
-        function renderFunds() { const container = document.getElementById('fundAllocationContainer'); if (container) container.innerHTML = fundNames.map((n, i) => `<div class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-200 shadow-sm font-prompt font-black"><span class="text-xs text-slate-900">${n}</span><span class="text-xs text-indigo-600 font-bold">${fmt(branchInvestment/5)}</span></div>`).join(''); }
-        window.saveFundNames = async () => { if (!userId) return; fundNames = Array.from({length: 5}, (_, i) => document.getElementById(`fundInput${i}`).value || `ทุน ${i+1}`); renderFunds(); window.toggleEditMode(false); await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'config_' + currentBranchId), { fundNames, branchInvestment }); };
-        window.toggleEditMode = (isEdit) => { const display = document.getElementById('fundAllocationContainer'); const edit = document.getElementById('fundEditContainer'); if (display) display.classList.toggle('hidden', isEdit); if (edit) edit.classList.toggle('hidden', !isEdit); if (isEdit) document.getElementById('fundEditInputs').innerHTML = fundNames.map((n, i) => `<input type="text" id="fundInput${i}" value="${n}" class="input-pastel w-full text-xs font-bold" maxlength="15">`).join(''); };
+        function renderFunds() { const container = document.getElementById('fundAllocationContainer'); if (container) container.innerHTML = fundNames.map((n, i) => `<div class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-200 shadow-sm font-prompt font-black"><span class="text-xs text-slate-900 font-prompt">${n}</span><span class="text-xs text-indigo-600 font-bold">${fmt(branchInvestment/7)}</span></div>`).join(''); }
+        window.saveFundNames = async () => { if (!userId) return; fundNames = Array.from({length: 7}, (_, i) => document.getElementById(`fundInput${i}`).value || `ทุนที่ ${i+1}`); renderFunds(); window.toggleEditMode(false); await setDocWithRetry(doc(db, 'artifacts', appId, 'users', userId, 'vending_data', 'config_' + currentBranchId), { fundNames, branchInvestment }); };
+        window.toggleEditMode = (isEdit) => { const display = document.getElementById('fundAllocationContainer'); const edit = document.getElementById('fundEditContainer'); if (display) display.classList.toggle('hidden', isEdit); if (edit) edit.classList.toggle('hidden', !isEdit); if (isEdit) document.getElementById('fundEditInputs').innerHTML = fundNames.map((n, i) => `<input type="text" id="fundInput${i}" value="${n}" class="input-pastel w-full text-xs font-bold font-prompt" maxlength="15">`).join(''); };
         window.generateAIAnalysis = async () => { /* AI Logic preserved */ };
-        window.exportDataToCSV = () => { /* CSV logic preserved */ };
-        async function updatePortfolioStats() { /* Portfolio stats logic preserved */ }
-        async function renderPortfolioChart() { /* Chart logic preserved */ }
+        window.exportDataToCSV = () => { /* CSV preserved */ };
     </script>
 </body>
 </html>
